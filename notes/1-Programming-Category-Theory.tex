@@ -1,14 +1,14 @@
-\chapter{Category Theory and Functional Programming}
+\chapter{Categories and Functional Programming}
 
 Now that we've defined what a category is according to Category Theory,
 one might wonder how this relates to programming. In this chapter,
 we introduce Functional Programming and we show how CT can be defined
 within programming.
 
-\section{What is Functional Programming?}
+\section{Introduction to Functional Programming}
 
 According to \citet{widman2022learning},
-there are three "main" programming paradigms: imperative programming, Object-Oriented Programming (OOP), and Functional Programming (FP).
+there are three ``main'' programming paradigms: imperative programming, Object-Oriented Programming (OOP), and Functional Programming (FP).
 Imperative programming is \textit{plain} programming, in the sense that you define variables, and functions, and mutate it's values.
 OOP models programs via objects. An object is from a class, and it has a state and methods. Thus, the value mutation is usually
 encapsulated by in the state of an object.
@@ -22,9 +22,252 @@ is a very natural way of thinking in code.
 \subsection{Is Julia an FP language?}
 
 As stated in the preface, we are going to use
-\pc{Julia} as the language to code our examples.
-\pc{Julia} is \textit{not} as FP oriented as languages such as \pc{Haskell} and \pc{Scala}.
+Julia as the language to code our examples.
+Julia is \textit{not} as FP oriented as languages such as Haskell and Scala.
 This helps people that are not used to FP. Also,
 the language enforces types and is \textit{not} Object-Oriented, which eases
-the process of porting FP concepts. In summary, \pc{Julia} stands close enough to FP
+the process of porting FP concepts. In summary, Julia stands close enough to FP
 without the often unusual syntax of highly FP oriented languages.
+
+\subsection{Julia's Type System}
+
+These notes do not intend to introduce the Julia programming language, as there are
+already plenty of resources on the subject. Yet, it is worthy to say some brief words on how
+Julia deals with types.
+
+In Julia, types can be concrete or abstract. Only concrete type can be instantiated, while abstract
+types are ways of grouping these types. For example, \pc{Int} and \pc{Float64} are concrete types, while
+\pc{Number} is an abstract type that contains both, i.e. \pc{Int} and \pc{Float64} are subtypes of \pc{Number}.
+We can check whether a type is a subtype of another type via the \pc{<:} operator, as shown below.
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+julia> Int <: Number, Float64 <: Number
+(true, true)
+\end{lstlisting}
+
+Types can be enforced when calling arguments in a functions, e.g.
+\pc{f(x::Int, y::String)}. Yet, the output type of a function is not enforced.
+This type enforcing allows for a feature called multiple dispatch. In Julia,
+a function can be defined several times by varying only the arguments, both
+quantity and types. Thus, we can have something like:
+
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+f(x::Int) = x^2
+f(x::Int,y) = (x^2, y)
+f(x::String) = "a string!"
+f(x::Int, y::Int) = x + y
+
+julia> f(2)
+4
+julia> f(2,"ok")
+(4,"ok")
+julia> f("test")
+a string!
+julia> f(1,1)
+2
+\end{lstlisting}
+
+Note that the same function \pc{f} was defined several times, one for each
+dispatching argument. Each of these instances is called a method of the function \pc{f}.
+When we don't define the type of the argument,
+Julia uses the type \pc{Any}, which means any type.
+If a function has a method with a more specific type, the compiler tries to
+call the more specialized function. In our example, the method \pc{f(x::Int, y::Int)}
+was more specialized than \pc{f(x::Int, y)}. This idea of a more specialized method
+is possible due to the fact that types have a hierarchy as we have shown in the
+example with types \pc{Int}, \pc{Float64} and \pc{Numbers}.
+
+Besides the default types that Julia provides, we can create new types.
+There are several ways of doing this, such as structs. By creating new types,
+we can define functions that take variables with these new types as arguments
+and dispatch on them.
+
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+struct Point2D
+    x::Real
+    y::Real
+end
+
+julia> p = Points2D(1,1)
+Point2D(1, 1)
+julia> p.x
+1
+julia> getproperty(p, :x)
+1
+\end{lstlisting}
+
+Structs are by default immutable, which is good for FP. Yet, we can define mutable structs by simply
+adding the word ``mutable'' before the ``struct''.
+
+Here is a more interesting example of how to use structs, type hierarchy and multiple-dispatch:
+
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+abstract type Shape end
+
+struct Point3D
+    x::Real
+    y::Real
+    z::Real
+end
+
+struct Square <: Shape
+    center::Point3D
+    length::Real
+    Square(center, length) = length ≥ 0 ? new(center, length) : error("length should be greater or equal than 0.")
+end
+
+struct Circle <: Shape
+    center::Point3D
+    radius::Real
+    Circle(center, radius) = radius ≥ 0 ? new(center, radius) : error("radius should be greater or equal than 0.")
+end
+
+area(s::Shape) = 0.0
+area(s::Circle) = π * s.radius^2
+area(s::Square) = length^2
+
+julia> s = Square(10,Point3D(0,0,0));
+julia> area(s)
+100
+\end{lstlisting}
+In our example, we set the default area of a shape to zero by defining our \pc{area(s::Shape) = 0.0}. For the
+shapes that we know how to compute the area, we write the formulas (e.g. square and circle). Note that
+we wrote \pc{Square <: Shape} to indicate that both of our structs are subtypes of \pc{Shape}.
+Note how Julia is \textit{not} Object-Oriented. The type \pc{Square} and the type \pc{Circle}
+do not have methods themselves. We instead define functions that dispatch on the desired type.
+This illustrates how Julia is somewhat FP oriented, but not all the way, since we don't have
+output type enforcing like in, for example, Haskell.
+
+
+\subsection{A First Example of Immutability}
+
+As we've said, FP has as a core principle the idea of immutable variables.
+If we consider a For-Loop, in Python, a simple\lstinline[style=julia]{}\lstinline[style=julia]{}for i in range(0,10):print(i)\lstinline[style=julia]{}\lstinline[style=julia]{}
+will create a variable \lstinline[style=julia]{i} that mutates by taking first value 0 then 1, and so on.
+In Julia, the default behaviour of a For-Loop is different. Julia enforces local scope,
+and creates local variables that are then destroyed. This is more like an FP style.
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=false]
+for i in 1:4
+    m = 1
+end
+\end{lstlisting}
+Instead of using a For-Loop, a functional way of doing this would be by defining a function and recursively calling it.
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+function myloop(i::Int)
+    if i > 5
+        return
+    end
+    println(i)
+    return myloop(i+1)
+end
+
+julia> myloop(0)
+0
+1
+2
+3
+4
+5
+\end{lstlisting}
+
+\subsection{Side Effects, Pure Functions and Referential Transparency}
+
+
+Consider a function \pc{f}. A function produces a side effect if it affects anything outside of it's score. For example:
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true, escapeinside={(@}{@)}]
+x = []
+function f!(x)
+    push!(x,1)
+end
+
+julia> f!(x);
+julia> x
+(@Any[1]@)
+\end{lstlisting}
+
+In Julia, we usually write an exclamation to the end of the name of a function
+to indicate that this function has side effects.
+Note that this is \textit{just} a notation.
+The exclamation point does not modify the function.
+A function without side effects is called \textit{pure}.
+
+Another important aspect is "referencial transparency".
+This means that for a given input \pc{x} a function should always return the same output \pc{y}.
+This seems logical, but there are clear examples that break this. For example:
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true, escapeinside={(@}{@)}]
+julia> rand(1)
+(@1-element Vector{Float64}:@)
+(@ 0.024980886821626025@)
+\end{lstlisting}
+Note that, in Mathematics,
+what we define as a function usually follows these two principals,
+i.e. mathematical functions are pure and referencially transparent.
+
+\subsection{Higher Order Functions}
+
+A high order function is a function that receives functions as input or that returns a function as output.
+In FP, we want functions to be "first-class citizens", meaninig that we can pass them to variables and to other
+functions just like a regular value.
+Here is one example:
+
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true, escapeinside={(@}{@)}]
+square() = nums -> map(x->x^2, nums)
+
+julia> square()(10)
+100
+\end{lstlisting}
+
+The function \pc{square} when called actually returns a function.
+Another similar consists in
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true, escapeinside={(@}{@)}]
+square_plus_one = function(x)
+    x^2 + 1
+end
+
+julia> square_plus_one(1)
+2
+
+square_plus_two = x->x^2+2
+
+julia> square_plus_two(2)
+6
+\end{lstlisting}
+
+\subsection{Lazy Evaluation}
+
+Another relevant concept is the one about lazy evaluation.
+In Julia we don't natively have lazy evaluation, on the contrary,
+our code is \textit{eagerly} evaluated.
+This means that once we call a function, it evaluates all the parameters.
+Of course, we can alter our code to try to make it lazy. Consider the following example:
+
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+imap = Iterators.map # version of `map` that returns an iterable
+take = Iterators.take # returns the `n` first values of an iterable.
+squarelazy(nums) = imap(x->x+1,nums)
+
+julia> x = 1:10;
+julia> squarelazy(x);
+julia> x
+1:10
+\end{lstlisting}
+
+Note that our function did not evaluate x.
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+julia> collect((squarelazy ∘ take)(x,2))
+2-element Vector{Int64}:
+ 2
+ 3
+\end{lstlisting}
+
+\section{Categories in Programming}
+
+

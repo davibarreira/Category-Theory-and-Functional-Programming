@@ -1,0 +1,274 @@
+\newpage
+
+\chapter{**Functional Programming - Introduction**}
+
+
+This is based on the book "Learning Functionl Programming" (Jack Widman).
+
+
+\section{1. What is Functional Programming?}
+
+
+There are three "main" programming paradigms: imperative programmming, Object-Oriented Programming (OOP), and Functional Programming (FP).Imperativie programming is \textit{plain} programming, in the sense that you define variables, and functions, and mutate it's values.OOP models programs via objects. An object is from a class, and it has a state and methods. Thus, the value mutation is usuallyencapsulated by in the state of an object.Finally, FP tries to erradicate (minimize) value mutation. Once a value is assigned to a varible, this shoudl not change.This might seem strange, but the idea is that value mutation is usually a source of bugs and complications, thus,by limiting it, we can try to make our code more robust.
+
+
+
+In a sense, Functional Programming is the most unusual of the three approaches, as value mutationis a very natural way of thinking in code.
+
+
+\section{2. Is Julia an FP language?}
+
+
+This question comes up a lot in Julia's forums. "Is Julia a Functional Programming Language?". The answerto this is "not really". For starters, Julia allows value mutation. FP is a paradigm, and there areprogramming languages that are more prone to FP than others. Thus, we can apply Functional Programming ideasto Julia (and even to Python).
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+using Pkg
+Pkg.activate(".")
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+[32m[1m  Activating[22m[39m project at `~/MEGA/EMAP/Julia_Tutorials/FunctionalProgramming`
+
+\end{verbatim}
+
+\endgroup
+
+\section{3. A First Example of Immutability}
+
+
+As we've said, FP has as a core principle the idea of immutable variables.If we consider a For-Loop, in Python, a simple\lstinline[style=julia]{}\lstinline[style=julia]{}for i in range(0,10):print(i)\lstinline[style=julia]{}\lstinline[style=julia]{}
+
+will create a variable \lstinline[style=julia]{i} that mutates by taking first value 0 then 1, and so on.
+
+In Julia, the default behaviour of a For-Loop is different. Julia enforces localscope, and creates local variables that are then destroyed. This is more likea FP style.
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+for i in 1:4
+    m = 1
+end
+try
+    i
+catch
+    println("`i` is note defined")
+end
+
+try
+    m
+catch
+    println("`m` is note defined")
+end
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+`i` is note defined
+`m` is note defined
+
+\end{verbatim}
+
+\endgroup
+Instead of using a For-Loop, a functional way of doing this wouldbe by defining a function and recursively calling it.
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+function myloop(i::Int)
+    if i > 5
+        return
+    end
+    println(i)
+    return myloop(i+1)
+end
+myloop(0)
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+0
+1
+2
+3
+4
+5
+
+\end{verbatim}
+
+\endgroup
+
+\section{4. Side Effects, Pure Functions and Referencial Transparency}
+
+
+Consider a function \lstinline[style=julia]{f}. A function produces a side effect if it affects anything outsideof it's score. For example:
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+x = []
+function f!(x)
+    push!(x,1)
+end
+f!(x)
+@show x;
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+x = Any[1]
+
+\end{verbatim}
+
+\endgroup
+In Julia, we usually write an exclamation to the end of the name of a functionto indicate that this function has side effects. Note that this is \textit{just} a notation.The exclamation point does not modify the function.A function without side effects is called \textit{pure}.
+
+Another important aspect is "referencial transparency". This means thatfor a given input \lstinline[style=julia]{x} a function should always return the same output \lstinline[style=julia]{y}.This seems logical, but there are clear examples that break this.For example:
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+rand(1)
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+
+1-element Vector{Float64}:
+ 0.024980886821626025
+\end{verbatim}
+
+\endgroup
+Note that, in Mathematics, what we define as a function usually follows these two principals, i.e.mathematical functions are pure and referencially transparent.
+
+\textbf{Def.(Function in Set Theory)}A function $f$ from a set $X$ to $Y$ is an assignment of an element of $Y$ to each element of $X$,denoted by $f: X \to Y$.The set $X$ is called domain, and $Y$ the codomain. The set $f(X):=\{f(x) :  x \in X\}$ is theimage of $f$.
+\section{5. Higher Order Functions}
+
+
+A high order function is a function that receives functions as input or that returns a function as output.In FP, we want functions to be "first-class citizens", meaninig that we canpass them to variables and to other functions just like a regular value.
+
+Here is one example:
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+square() = nums -> map(x->x^2, nums)
+square()(10)
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+
+100
+\end{verbatim}
+
+\endgroup
+The function \lstinline[style=julia]{square} when called actually returns a function.Another similar consists in
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+square_plus_one = function(x)
+    x^2 + 1
+end
+@show square_plus_one(1)
+
+square_plus_two = x->x^2+2
+
+@show square_plus_two(2);
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+square_plus_one(1) = 2
+square_plus_two(2) = 6
+
+\end{verbatim}
+
+\endgroup
+
+\section{6. Lazy Evaluation}
+
+
+Another relevant concept is the one about lazy evaluation.In Julia we don't natively have lazy evaluation, on the contrary,our code is \textit{eagerly} evaluated. This means that once we call a function,it evaluates all the parameters.
+
+Of course, we can alter our code to try to make it lazy.Consider the following example:
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+imap = Iterators.map # This is a version of `map` that returns an iterable
+take = Iterators.take # This function takes an iterable and returns the `n` first values.
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+
+take (generic function with 2 methods)
+\end{verbatim}
+
+\endgroup
+
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+squarelazy(nums) = imap(x->x+1,nums)
+x = 1:10
+
+squarelazy(x);
+x
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+
+1:10
+\end{verbatim}
+
+\endgroup
+
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+typeof(1:10)
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+
+UnitRange{Int64}
+\end{verbatim}
+
+\endgroup
+Note that our function did not evaluate x.
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+collect((squarelazy ∘ take)(x,2))
+\end{lstlisting}
+
+\begingroup
+
+\fontsize{10pt}{12pt}\selectfont
+
+\begin{verbatim}
+
+2-element Vector{Int64}:
+ 2
+ 3
+\end{verbatim}
+
+\endgroup
