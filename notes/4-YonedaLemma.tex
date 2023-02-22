@@ -1,0 +1,148 @@
+\chapter{Yoneda Lemma}
+
+One of the most important results in Category Theory is the so called Yoneda Lemma.
+In this chapter, we present and prove this lemma. But before going into some
+technical details, let's present some intuition behind what's
+going on based on the excellent post at Math3ma.
+
+Remember that one of the main points of Category Theory is to describe mathematical
+objects via their relations, instead of their definitions. One question that
+arises is if we can indeed make the claim that ``an object is
+completely determined by its relationships to other objects
+''. Of course, the claim is not rigorously posed, so let's dish it out a bit more.
+
+First of, by relationships we are actually saying ``morphisms'',
+and we assume that our object $X$ belongs to a category $\mathcal C$.
+So, the question is whether $(X, \{\text{definition}\})$ is ``the same''
+as $(X, \{\text{relationships of }X\})$. The idea of ``same'' can
+be rigorously defined using categorical isomorphism, and the
+set of $X$ and it's relationships can actually be written as
+
+\begin{equation}
+	(X, \{ f \in Mor_\mathcal C(X,Z) \cup Mor_\mathcal C(Z,X): Z \in Ob_\mathcal C).
+	\label{eq:relationdef}
+\end{equation}
+
+Let's now give an example of what we are trying to show. Consider the category $\mathbf{Set}$
+and two objects $X:=\{1,2\}$ and $Y :=\{a,b\}$. Note that we are introducing these objects
+by presenting their definitions, e.g. $X:=\{1,2\}$ is the same as saying
+``$\text{X is a set with the elements 1 and 2}$'', which is the same as:
+\begin{displaymath}
+	(X, \{\text{set with elements 1 and 2}\}).
+\end{displaymath}
+Our question is if instead of
+defining $X$ and $Y$ by describing what they are ``made of'', we could just
+define them by describing the many ways they relate to other sets, i.e. by describing their relations.
+
+To study this question, we need a better way to describe the object and it's relationships
+instead of trying to work with \eqref{eq:relationdef}. The way to do this is
+by noting that we can actually turn this into a functor, which is
+a functorial representation of an object.
+
+This representation is not that straight forward, and will require
+some more definitions along the way.
+
+\begin{definition}[Representable Functor]
+	Let $\mathcal C$ be a locally small category and $A \in Ob_\mathcal C$.
+	Define a functor
+	\begin{displaymath}
+		H^A \equiv Mor_\mathcal C(A,-): \mathcal C \to \mathbf{Set},
+	\end{displaymath}
+
+	such that for $B \in Ob_\mathcal C$, we have $Mor_\mathcal C (A,-)(B) \equiv Mor_\mathcal C (A,B)$, and
+	for $ f \in Mor_\mathcal C (B,C)$ we have
+	\begin{gather*}
+		H^A f \equiv Mor_\mathcal C(A,f) : Mor_\mathcal C(A,B) \to Mor_\mathcal C(A,C), \text{ where} \\
+		\forall g \in Mor_\mathcal C(A,B) , \ H^A f (g) = f \circ g.
+	\end{gather*}
+
+	It's clear that $H^A$ is a functor. If a functor $F:\mathcal C \to \mathbf{Set}$
+	is naturally isomorphic to $H^A$ for some $A \in \mathcal C$, then we say that
+	$F$ is \textbf{representable}. Note that only functors with $\mathbf{Set}$
+	as codomain are possible to be representable.
+\end{definition}
+Note that the definition requires $\mathcal C$ to be locally small in order to $Mor_\mathcal C (A,B) \in Ob_{\mathbf{Set}}$.
+
+Let's now look to the family of representable functors in a category $\mathcal C$, i.e.
+$(H^A)_{A \in Ob_\mathcal C}$. We can define a \textit{contravariant} functor
+$H^\bullet$ that takes an object $A \in Ob_\mathcal C$ to $H^A$, and for
+a morphism $f \in Mor_\mathcal C (A,B)$, $H^\bullet f \equiv H^f : H^B \to H^A$ is a natural
+transformation where
+\begin{gather*}
+	H^f(D):
+	\underbrace{H^B(D)}_{Mor_\mathcal C(B,D)} \to
+	\underbrace{H^A(D)}_{Mor_\mathcal C(A,D)}, \\
+	\text{such that }\forall p \in Mor_\mathcal C (B,D), \ H^f (D) (p) = p \circ f.
+\end{gather*}
+
+Thus, note that the contravariant functor $H^\bullet$ has domain $\mathcal C$
+and the codomain is the category of functors from $\mathcal C$ to $\mathbf{Set}$.
+Instead of working with the contravariant functor, we can use lemma
+\ref{lemma:contravariant}, and instead use the equivalent version where
+$H^\bullet$ is a covariant functor, thus concluding that
+$H^\bullet: \mathcal C^{op} \to \mathbf{Set}^\mathcal C$.
+
+\begin{lemma}[Yoneda Lemma]
+	Let $\mathcal C$ be a category, and $F:\mathcal C \to \mathbf{Set}$ a functor.
+	Therefore, for every $A \in \mathcal C$, there exists
+	\begin{displaymath}
+		\theta_{F,A}: \text{Nat}(Mor_\mathcal C (A, -), F) \to FA,
+	\end{displaymath}
+	where $\theta_{F,A}$ is a bijetive function from the natural transformations
+	between the functors $Mor_\mathcal C (A, -)$ and $F$, and the set of elements of the set $FA$
+	\footnote{Note that it's implicit here the fact that the class of natural transformation between
+		these two functors is actually a set.}.
+	Moreover, the bijections $\theta_F := (\theta_{F,A})_{A \in Ob_\mathcal C}$ constitute a natural transformation
+	in the variable $A$; and when $\mathcal C$ is a small category,
+	then $(\theta_{F,A})_{F \in Fun(\mathcal C, \mathbf{Set})}$
+	consitutes a natural transformation in the variable $F$.
+\end{lemma}
+
+Let's prove that the definition above is indeed a category.
+For that, we need to define a way to compose natural transformations that
+is associative, and we also need to define an identity morphism.
+
+\begin{proposition}
+	In the category $\mathcal D^{\mathcal C}$, define the composition of two natural
+	transformations $\alpha:F\to G$ and $\beta:G\to H$ as
+	\begin{displaymath}
+		\forall c \in \mathcal C, \ \alpha_c \fatsemi \beta_c = (\alpha \fatsemi \beta)_c.
+	\end{displaymath}
+	Then, using this definition, $\alpha \fatsemi \beta$ is indeed a normal transformation
+	from $F \to H$, and this composition is associative.
+\end{proposition}
+\begin{proof}
+	First, since
+	$\alpha_c \in Mor_\mathcal D (F(c),G(c))$,
+	$\beta_c \in Mor_\mathcal D (G(c),H(c))$,
+	$\gamma_c \in Mor_\mathcal D (H(c),J(c))$,
+	then
+	\begin{align*}
+		\alpha \fatsemi (\beta \fatsemi \gamma) \iff
+		\forall c \in \mathcal C, \alpha_c \fatsemi (\beta \fatsemi \gamma)_c & =
+		\alpha_c \fatsemi (\beta_c \fatsemi \gamma_c)                             \\&=
+		(\alpha_c \fatsemi \beta_c) \fatsemi \gamma_c                             \\&=
+		(\alpha_c \fatsemi \beta_c) \fatsemi \gamma_c                             \\&=
+		(\alpha \fatsemi \beta)_c \fatsemi \gamma_c
+		\iff (\alpha \fatsemi \beta) \fatsemi \gamma.
+	\end{align*}
+	We proved the associative part. Now, we need to show that such $\alpha \fatsemi \beta$
+	is a natural transformation from $F$ to $H$. Take $f:c\to c' \in Mor_\mathcal C$.
+	Consider $(\alpha \fatsemi \beta)_{c}:F(c) \to H(c)$, and
+	$(\alpha\fatsemi \beta)_{c'}:F(c') \to H(c')$. Note that
+	\begin{displaymath}
+		F(f) \fatsemi \alpha_{c'} = \alpha_{c} \fatsemi G(f), \quad
+		G(f) \fatsemi \beta_{c'} = \beta_{c} \fatsemi H(f).
+	\end{displaymath}
+
+	Therefore, we have
+	\begin{align*}
+		F(f) \fatsemi (\alpha\fatsemi \beta)_{c'} =
+		(F(f) \fatsemi \alpha_{c'}) \fatsemi \beta_{c'} & =
+		(\alpha_c \fatsemi G(f)) \fatsemi \beta_{c'}        \\&=
+		\alpha_c \fatsemi (G(f) \fatsemi \beta_{c'})        \\&=
+		\alpha_c \fatsemi \beta_c \fatsemi H(f)             \\&=
+		(\alpha \fatsemi \beta)_c \fatsemi H(f).
+	\end{align*}
+\end{proof}
+

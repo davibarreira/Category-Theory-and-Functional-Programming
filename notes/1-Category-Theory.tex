@@ -1,0 +1,768 @@
+\chapter{Category Theory - The Very Basic}
+
+The study of Category Theory enables us to view Mathematics from a vantage
+point, and better understand how the different areas are connected.
+By looking at the subject from the distance (via Category Theory), we get
+a glimpse at the connections (and disconnections) between different fields.
+
+Another interesting observation about Category Theory is that it's
+breaking the theoretical barrier and it's starting to be applied
+in real world applications. One prominent example is in programming,
+as highlighted by the book \citet{milewski2018category}.
+The book by \citet{fong2019invitation} also focus on the application
+side of Category Theory.
+
+This chapter introduces the field of Category Theory by
+presenting the first three components of the theory, i.e.
+categories, objects, and morphisms.
+
+\section{Universes, Sets and Classes}
+
+This section is a bit technical. The goal is to formally
+define the difference between a set and a class. This is a nuanced
+point, but a necessary one if we wish to do things with rigour.
+
+When working on Category Theory, it's common to find universal
+statements such as ``for all topological spaces...''. The issue
+with such statements is that, in a purely set-theoretical sense,
+we have to know whether such large collection (``all topological spaces'')
+is indeed a set. We might be tempted to say that's true, but
+it's not so simple. Russel's Paradox of whether there is a set of all sets
+is an example of when the answer is ``no''.
+
+Therefore, in order to deal with such issue, we need a way to differentiate
+between a valid set and an arbitrary collection. Here is where the notion of a Universe comes in.
+
+\begin{definition}[Universe]
+	We say that a set $\mathfrak U$ is a universe if\footnote{Definition from \citet{borceux1994handbook}}
+	\begin{enumerate}[(i)]
+		\item $x\in y$ and $ y\in \mathfrak U$, then $x \in \mathfrak U$;
+		\item $I \in \mathfrak U$, and $\forall i \in I, x_i \in \mathfrak U$, then $\cup_{i\in I}x_i \in \mathfrak U$;
+		\item $x \in \mathfrak U$ then $\mathcal P(x) \in \mathfrak U$, where $\mathcal P(x)$ is the power set;
+		\item $x \in \mathfrak U$ and $f:x\to y$ is a surjective function, then $y \in \mathfrak U$;
+		\item $\mathbb N \in \mathfrak U$.
+	\end{enumerate}
+\end{definition}
+
+From this definition, one can prove the following proposition.
+\begin{proposition}
+	Let $\mathfrak U$ be a universe. Therefore:
+	\begin{enumerate}[(i)]
+		\item $x \in \mathfrak U$ and $y \subset x$, then $y \in \mathfrak U$;
+		\item $x \in \mathfrak U$ and $y \subset x$, then $\{x,y\} \in \mathfrak U$;
+		\item $x \in \mathfrak U$ and $y \subset x$, then $x\times y \in \mathfrak U$;
+		\item $x \in \mathfrak U$ and $y \subset x$, then $y^x \in \mathfrak U$, where $y^x$ is the set of functions $f:x \to y$.
+	\end{enumerate}
+	\label{prop:universe}
+\end{proposition}
+
+With this definition, we state the axiom of existence of universes.
+
+\begin{axiom}
+	Every set $S$ belongs to some universe $\mathfrak U$.
+\end{axiom}
+
+\begin{definition}
+	For a fixed universe $\mathfrak U$, if a set $S$ is an element of $\mathfrak U$,
+	then $S$ is called a \textit{small set}.
+\end{definition}
+
+Talking about ``small sets'' and ``big set'' might become daunting, so instead, we
+use a different convention which is based on Gödel-Bernays theory of sets and classes.
+This theory states that:
+\begin{axiom}[Gödel-Bernays]
+	A class is a set if and only if it belongs to some (other)
+	class.
+	\label{axiom:gb}
+\end{axiom}
+
+Note that using the notion of Universes, we can recover Gödel-Bernays theory. For that,
+use the following definition:
+\begin{definition}
+	For a fixed universe $\mathfrak U$, we call $S$ a \textit{set} if it's an element
+	of $\mathfrak U$, and call $S$ a \textit{class} if it's a subset of $\mathfrak U$.
+	A class that is not a set is called a \textit{proper class}.
+\end{definition}
+
+From now on, whenever we say \textit{set} we are implying \textit{small set}
+and whenever we say \textit{class} we are implying either small or big sets,
+following \citet{borceux1994handbook} convention.
+
+
+\section{What is a Category?}
+
+Let's formally define a category and provide some examples.
+
+\begin{definition}[Category]
+	A category $\mathcal C = \langle Ob_{\mathcal C}, Mor_{\mathcal C} \rangle$ consists
+	of a class of objects $Ob_\mathcal C$ and a class of morphisms
+	$Mor_\mathcal C$ satisfying the following conditions:
+	\begin{enumerate}[(i)]
+		\item Every morphism $f \in Mor_\mathcal C$ is associated to two objects $X,Y \in Ob_{\mathcal C}$
+		      which is represented by $f:X \to Y$ or $X \xrightarrow{\hspace{3mm}f \hspace{3mm}} Y$,
+		      where $dom(f) = X$ is called the domain of $f$ and $cod(f)=Y$ is the codomain. Moreover, we define
+		      $Mor_\mathcal C (X,Y)$ as
+		      \begin{displaymath}
+			      Mor_\mathcal C (X,Y) := \{f \in Mor_\mathcal C \ : \ X \in dom(f), \ Y \in cod(f)\};
+		      \end{displaymath}
+		\item For any three objects $X,Y, Z \in Ob_\mathcal C$, there exists a composition operator
+		      \begin{displaymath}
+			      \circ: Mor_\mathcal C (X,Y)   \times Mor_\mathcal C (Y,Z) \to Mor_\mathcal C (X,Z),
+		      \end{displaymath}
+		\item For each object $X \in Ob_\mathcal C$ there exists a morfism $id_X \in Mor_\mathcal C (A,A)$
+		      called the identity.
+	\end{enumerate}
+	The composition operator must have the following properties:
+	\begin{enumerate}[(p.1)]
+		\item \textit{Associative}: for every $f \in Mor_\mathcal C (A,B),
+			      g \in Mor_\mathcal C (B,C), h \in Mor_\mathcal C (C,D)$ then
+		      \begin{displaymath}
+			      h \circ (g \circ f) = (h \circ g) \circ f.
+		      \end{displaymath}
+		\item For any $f \in Mor_\mathcal C (X,Y)$, $g \in Mor_\mathcal C (Y,X)$,
+		      \begin{displaymath}
+			      f \circ id_X = f,  \quad id_Y \circ g = g.
+		      \end{displaymath}
+	\end{enumerate}
+\end{definition}
+
+There are many ways to refers to the class of morphisms $Mor_\mathcal C (X,Y)$, such as
+$\mathcal C(X,Y)$ or $\text{hom}_\mathcal C (X,Y)$. The reason for this is that
+this set is sometimes called hom-set. In these notes, we'll use either $Mor_\mathcal C (X,Y)$
+or $\mathcal C (X,Y)$ when there is no ambiguity. Also, we'll use $dom_f$ to mean $dom(f)$,
+and similarly for the codomain.
+
+Another point about conventions. When talking about composition, it's convenient
+to use the operator $\fatsemi$, which is equivalent to the composition $\circ$,
+but with the inverted order, i.e. $f \fatsemi g = g \circ f$. The convinience
+will become clearer once we introduce Hasse diagrams as a way to represent categories.
+
+\begin{definition}[Small Category]
+	A category $\mathcal C$ is \textit{small} if $Ob_\mathcal C$ and
+	$Mor_\mathcal C$ are sets (small).
+\end{definition}
+
+\begin{definition}[Locally Small Category]
+	A category $\mathcal C$ is \textit{locally small} if
+	for any $A, B \in Ob_\mathcal C$, then
+	$Mor_\mathcal C(A,B)$ is a set (small).
+\end{definition}
+
+\subsection{Examples of Categories}
+
+It's very common to represent categories via Hasse Diagrams. In these diagrams, the
+objects are represented as dots, and the morphisms as arrows. Let's show some examples.
+
+\begin{example}[Category $\bm 1$]
+	The category $\bm 1$ consists of $Ob_{\bm 1} := \{A\}$ and $Mor_{\bm 1} = \{id_A\}$.
+	The diagram for such category is shown below.
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics{./notebooks/1Cat}
+		\end{center}
+		\caption{Hasse diagram of category $\bm 1$.}
+		\label{fig:1Cat}
+	\end{figure}
+\end{example}
+
+\begin{example}[Category $\bm 2$ and $\bm 3$]
+	The category $\bm 2$ consists of $Ob_{\bm 2} := \{A, B\}$ and $Mor_{\bm 1} = \{id_A, id_B, f\}$,
+	where $f:A \to B$.
+	The diagram for such category is shown below.
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics{./notebooks/2Cat}
+		\end{center}
+		\caption{Hasse diagram of category $\bm 2$.}
+		\label{fig:2Cat}
+	\end{figure}
+
+	Since we know that identities are always present in categories, we'll
+	omit them from future diagrams when there is no ambiguity. Thus,
+	the figure below represents the same diagram as Figure \ref{fig:2Cat}.
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics{./notebooks/2Catsimple}
+		\end{center}
+		\caption{Hasse diagram of category $\bm 2$ omitting identity morphisms.}
+		\label{fig:2Catsimple}
+	\end{figure}
+
+	The category $\bm 3$ has three morphisms besides the identities, given
+	by $f$, $g$ and their composition $f \fatsemi g$. The figure below
+	illustrates the category with all it's morphisms.
+
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics{./notebooks/3CatComplete}
+		\end{center}
+		\caption{Hasse diagram of category $\bm 3$ showing all morphisms.}
+		\label{fig:3Catcomplete}
+	\end{figure}
+
+	Drawing all the morphisms can make the diagram become too crowded, specially
+	as the number of objects and morphisms grows. Hence, we simplify the
+	diagram representation by ommiting not only the identity morphisms, but also
+	the compositions. These can always be assumed to exist, since they are a necessery
+	condition for every category.
+	Thus, the figure below represents the same diagram as Figure \ref{fig:3Catcomplete}.
+
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics{./notebooks/3Catsimple}
+		\end{center}
+		\caption{Hasse diagram of category $\bm 3$ omitting identities and compositions.}
+		\label{fig:3Catsimple}
+	\end{figure}
+
+\end{example}
+
+\begin{example}[Discrete Categories]
+	The discrete category $\mathbf{\underline{N}}$ is the category with $N$ objects
+	and $Mor_{\mathbf{\underline{N}}} := \{id_1,...,id_N\}$. An example of this category is
+	illustrated below.
+
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics{./notebooks/3Discrete.pdf}
+		\end{center}
+		\caption{Example of category $\mathbf{\underline{3}}$.}
+		\label{fig:3Discrete}
+	\end{figure}
+\end{example}
+
+\begin{example}[Preorders]
+	A preorder is defined by a tuple $(P, \leq)$, where $P$ is a set of values, such that
+	\begin{enumerate}[(i)]
+		\item For $a,b \in P$, if $a\leq b$ and $b \leq c$, then $a \leq c$;
+		\item For every $a \in P$, $a \leq a$.
+	\end{enumerate}
+	We can show that actually, this is a category, which we'll call $\mathcal P$,
+	where $Ob_\mathcal P = P$ and each morphism $f$ represents $a \leq b$, where
+	$cod_f = a$ and $dom_f = b$.
+	One example of preorder is the set of $\mathbb N$ equiped with the binary relation $\leq$
+	which is shown in the diagram below.
+
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics{./notebooks/NCat}
+		\end{center}
+		\caption{Hasse diagram of preorder category of natural numbers.}
+		\label{fig:NCat}
+	\end{figure}
+\end{example}
+
+Note that in preorders, there is at most one morphism between each pair of objects.
+Thus, categories with such property are often referred as \textit{thin categories}
+or \textit{preorder category} (in \citet{fong2019invitation}, the authors call this
+a \textit{preorder reflection}).
+
+\begin{example}[Monoids]
+	A monoid is a triple $(M, \oplus, e_M)$ where $\oplus:M\times M \to M$ is a binary operation
+	and $e_M$ the neutral element, such that:
+	\begin{enumerate}
+		\item $a \oplus (b \oplus c) = (a \oplus b) \oplus c$
+		\item $a \oplus e_M = e_M \oplus a = a$.
+	\end{enumerate}
+	Note that $(\mathbb N \cup\{ 0\}, +, 0)$ is a monoid.
+
+	Moreover, each single monoid can be defined as a category itself. For
+	monoid $(M, \oplus, e_M)$, define a category $\mathcal C$
+	such that $Ob_\mathcal C := \{M\}$, and the set of morphisms
+	are the elements of $M$, i.e.
+	$Mor_\mathcal C := \{a \in M\}$. Finally, we define the composition
+	operartion as $a \circ b := a \oplus b$
+	Thus, $(\mathbb N \cup \{0\}, +, 0)$ is the category illustrated in
+	Figure \ref{fig:NMonoid}.
+
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics{./notebooks/NMonoid}
+		\end{center}
+		\caption{Hasse diagram of monoid category of natural numbers.}
+		\label{fig:NMonoid}
+	\end{figure}
+
+\end{example}
+
+There are many other examples:
+\begin{enumerate}[1.]
+	\item $\mathbf{Set}$ which is the category of sets, where the objects are sets and the morphisms are functions between sets.
+	\item $\mathbf{Top}$ is the category where topological spaces are the objects and continuous functions are the morphisms.
+	\item $\mathbf{Vec}_\mathbb F$ is the category where vector spaces over field $\mathbb F$ are the objects,
+	      and linear transformations are the morphisms.
+	\item $\mathbf{Gr}$ is the category of directed graphs, where $Ob_{\mathbf{Gr}} := \{\text{Vertex}, \text{Arrow}\}$,
+	      and the morphisms are
+	      \begin{displaymath}
+		      Mor_{\mathbf{Gr}} := \{
+		      src,
+		      tgt,
+		      id_{\text{Vertex}},
+		      id_{\text{Arrow}}
+		      \}
+	      \end{displaymath}
+	      where $src:\text{Arrow} \to \text{Vertex}$ returns the source vertex for each arrow and
+	      $tgt:\text{Arrow} \to \text{Vertex}$ returns the target vertex.
+\end{enumerate}
+
+
+\subsection{Isomorphism, monomorphism and epimorphism}
+
+A very important definition in Category Theory is the notion of isomorphism.
+In Set Theory, we say that two sets are isomorphic if there is a bijective
+function between them. Yet, this concept is not restricted to Set Theory
+and can be generalized in Category Theory as follows:
+
+\begin{definition}[Categorical Isomorphism]
+	Let $\mathcal C$ be a category with $X,Y \in Ob_\mathcal C$ and $f \in Mor_\mathcal C (X,Y)$.
+	\begin{enumerate}[(i)]
+		\item We say that $f$ is \textit{left invertible} if there exists $f_l \in Mor_\mathcal C (Y,X)$ such
+		      that $f_l \circ f = id_X$;
+		\item We say that $f$ is \textit{right invertible} if there exists $f_r \in Mor_\mathcal C (Y,X)$ such
+		      that $f \circ f_r = id_Y$;
+		\item We say that $f$ is invertible if it's both left and right invertible.
+	\end{enumerate}
+	When an invertible morphism exists between $X$ and $Y$, we say that they are isomorphic.
+	\label{def:CategoricalIsomorphism}
+\end{definition}
+
+\begin{proposition}
+	The following properties on inverses are true:
+	\begin{enumerate}[1.]
+		\item If $f$ is an invertible morphism, then the left and right inverses are the same.
+		\item If $f$ and $g$ are invertible and composable, then $f \circ g$ is also invertible.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	1. Let $f$ be invertible with left inverse $f_l$ and right inverse $f_r$. Therefore,
+	\begin{displaymath}
+		f_l \circ id_Y = f_l \circ f \circ f_r = id_X \circ f_r = f_r.
+	\end{displaymath}
+
+	2. Let $f:A\to B$ and $g: B \to C$ be invertible and composable, with $f\circ g: A \to C$.
+	There exists the inverses $g^{-1}: C \to B$ and $f^{-1}:B \to A$. Note that
+	$f^{-1}\circ g^{-1}:C \to A$, thus
+	\begin{align*}
+		(f^{-1} \circ g^{-1}) \circ (g \circ f) =
+		f^{-1} \circ (g^{-1} \circ g) \circ f =
+		(f^{-1} \circ id_B) \circ f =
+		f^{-1} \circ f =
+		id_A.
+	\end{align*}
+	\begin{align*}
+		(g \circ f) \circ (f^{-1} \circ g^{-1})  =
+		g \circ (f \circ f^{-1}) \circ g^{-1} =
+		g \circ (id_B \circ g^{-1}) =
+		g \circ g^{-1} =
+		id_B.
+	\end{align*}
+	We conclude that $(g\circ f)^{-1} = f^{-1} \circ g^{-1}$.
+
+\end{proof}
+Although similar to set isomorphism, categorical isomorphism is in a sense more general,
+and captures our intuition of isomorphism between categories better than the set theoretic case,
+even when we have finite objects.
+
+Consider the following example.
+Let $\mathcal P$ be the category of Posets, where posets $(P,\leq_p)$ are the objects.
+Take two objects $P_1, P_2 \in Ob_\mathcal P$,
+where $P_1:=\{a,b\}$ with $a$ and $b$ \textbf{not} comparable,
+and $P_2:=\{0,1\}$ where indeed $0 \leq 1$. The question is whether $P_1$ is ``actually'' isomorphic
+to $P_2$, and our intuition say that they should not be, since
+$P_1$ has two incomparable elements while $P_2$ has two comparable elements.
+
+If we use the set theoretic definition, we would conclude that they \textbf{are} isomorphic,
+since there is a bijective function between $P_1$ and $P_2$.
+Take for example $f:P_1\to P_2$ where $f(a)=0$ and $f(b)=1$.
+So the set theoretic isomorphism does not capture what we want. What about the categorical isomorphism?
+We can prove that this will not be an isomorphism using the categorical definition. Yet,
+in order to prove this, we need to specify what are the morphisms between the posets,
+and to do this, we need to define what are functors.
+
+In the same way that set isomorphism is not the same as categorical isomorphism,
+the notions of injectivity and surjectivity are not equivalent to their categorical
+counterparts, which are called monomorphism and epimorphism.
+
+\begin{definition}[Monomorphism]
+	Let $\mathcal C$ be a category and $f \in Mor_\mathcal C(A,B)$. We say that
+	$f$ is a monomorphism (or monic), if
+	\begin{displaymath}
+		f \circ g = f \circ h \implies g = h.
+	\end{displaymath}
+\end{definition}
+
+\begin{definition}[Epimorphism]
+	Let $\mathcal C$ be a category and $f \in Mor_\mathcal C(A,B)$. We say that
+	$f$ is an epimorphism (or epic), if
+	\begin{displaymath}
+		g \circ f = h \circ f \implies g = h.
+	\end{displaymath}
+\end{definition}
+\textbf{Important!} A morphism $f$ can be both epic and monic, without being
+an isomorphism, which again highlights the difference between this concepts and their
+set-theoretic counterparts. A counter example for this is the inclusion
+$\mathbb Z \hookrightarrow \mathbb Q$ in the category $\mathbf{Ring}$.
+This category has rings as objects and ring homomorphisms as morphisms.
+Note that the inclusion is a homomorphism from $\mathbb Z$ to $\mathbb Q$ that is both monic and epic,
+yet, there is no homomorphism from $\mathbb Q$ to $\mathbb Z$.
+
+\begin{proposition}
+	The following properties on monomorphism and epimorphism are true:
+	\begin{enumerate}[1.]
+		\item $f$ left-invertible $\implies$ $f$ is monic. The converse is not true.
+		\item $f$ right-invertible $\implies$ $f$ is epic. The converse is not true.
+		\item $f$ invertible $\implies$ $f$ is monic and epic. The converse is not true.
+		\item $f$ monic and right-invertible $\implies $ $f$ is isomorphism.
+		\item $f$ epic and left-invertible $\implies $ $f$ is isomorphism.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	1. Note $f:A \to B$ left-invertible implies that there exists a $f_l:B \to A$ such that
+	$f_l \circ f = id$. Hence, for a $g:B\to C$ and $h: B \to C$, if
+	\begin{displaymath}
+		f \circ g = f \circ h,
+	\end{displaymath}
+	then we have that
+	\begin{displaymath}
+		f_l \circ f \circ g = f_l \circ f \circ h \implies g =h.
+	\end{displaymath}
+	To show that the converse is false, consider the category $\mathbf{2}$ (Figure \ref{fig:2Cat}). Note that
+	$f:A\to B$ is monic, since the only morphism that composes with $f$ is
+	$id_A$ and $id_B$. Yet, note that $f$ is not left invertible, since there isn't even
+	a morphism from $B$ to $A$.
+
+	2. Use the same argument, but reversing the order of the compositions.
+	For the converse, again consider the same category $\mathbf{2}$. Note that
+	$f:A\to B$ is epic, but it's not right invertible.
+
+	3. True since invertible means left and right invertible.
+
+	4. Since $f:A \to B$ right invertible, then there exists $f_r:B \to A$
+	such that $f \circ f_r = id_B$. Thus,
+	\begin{displaymath}
+		id_B \circ f = (f \circ f_r) \circ f =
+		f \circ (f_r \circ f) =
+		f \circ id_A \implies f_r \circ f = id_A.
+	\end{displaymath}
+	5. Same argument.
+\end{proof}
+
+Lastly, let's introduce two definitions that are helpful when talking about morphisms.
+\begin{definition}[Endomorphism and Automorphism]
+	A morphism is called an endomorphism is the domain and codomain object are the same.
+	If this endomorphism is an isomorphism, then we call it an automorphism.
+\end{definition}
+
+\subsection{Zero, Initial and Terminal Objects}
+
+\begin{definition}[Zero, Initial and Terminal]
+	Let $\mathcal C$ be a category.
+	\begin{enumerate}[1.]
+		\item An object $I \in Ob_\mathcal C$ is \textit{initial} if for every $A \in Ob_\mathcal C$,
+		      there is exactly one morphism from $I$ to $A$. Thus, from $I$ to $I$ there is only the identity.
+		\item An object $T \in Ob_\mathcal C$ is \textit{terminal} if for every $A \in Ob_\mathcal C$,
+		      there is exactly one morphism from $A$ to $T$. Thus, from $I$ to $I$ there is only the identity.
+		\item An object is \textit{zero} if it's both terminal and initial.
+	\end{enumerate}
+\end{definition}
+
+Note that in the definitions above, we are defining these objects in terms of existence and
+uniqueness of morphisms, which is known in category theory as \textbf{universal constructions}
+(more on this later).
+
+\begin{theorem}
+	Every \textit{initial} object is unique up to an isomorphism, i.e. if in a category there
+	are two \textit{initial} objects, then they are isomorphic.
+	Similarly, \textit{terminal} objects are unique up to an isomorphism.
+	Moreover, the isomorphism is unique between initial object, and between terminal objects.
+\end{theorem}
+\begin{proof}
+	Let $I_1, I_2$ be initial. Then, there exists only $f:I_1 \to I_2$ and $g:I_2 \to I_1$.
+	But since $g \circ f:I_1 \to I_1$ is a morphism from the initial object $I_1$, it must
+	be equal to $id_{I_1}$. The same for $I_2$, which implies that $f$ and $g$ are inverses,
+	and thus the objects are isomorphic. Since both $f$ and $g$ are the only morphisms from
+	$I_1$ and $I_2$, this also implies that their are the only isomorphism.
+	The same proof works for terminal objects.
+\end{proof}
+
+
+\begin{example}[Terminal and Initial Objects in $\mathbf{Set}$]
+	Without thinking too much, one might assumet that in the category $\mathbf{Set}$
+	the empty set would be a zero object; but that's not true.
+	In reality, the empty set is the initial object, since $f:\varnothing \to B$
+	is the only function from the empty set to any other set. Why is this valid?
+
+	Remember that in set theory, a function from two sets is defined as a binary
+	relation such that for every $x \in dom_f$, there is a unique $y \in cod_f$, i.e.
+	$f$ is a triple $(A,B,G)$, where $A = dom_f$, $B = cod_f$ and $G \subset A \times B$
+	such that $\forall x \in dom_f$, there exists a unique $y \in B$, such that $(x,y) \in G$.
+
+	Since $dom_f = \varnothing$, we have that $G \subset \varnothing \times B$, but this
+	is actually empty. Why? If $\varnothing \times B$ is not empty, then there exists
+	$(a,b) \in \varnothing \times B$, which is false, since this would imply that
+	$a \in \varnothing$, which contradicts the definition of the empty set that says
+	that it can have no elements (note that $\varnothing \in \varnothing$ is actually false).
+
+	With this, we have that $G = \varnothing$, thus, the only possible function from
+	$\varnothing$ to $B$ is $f = (\varnothing, \varnothing, B)$. Which proves that the
+	empty set is initial.
+
+	But what about terminal? The empty set actually does not have any morphisms
+	that arrives on it, since there is no function $f:A \to \varnothing$.
+	The terminal sets in $\mathbf{Set}$ are actually all the singletons (sets with only
+	one element), since for any $\{a\}$, there will be only one function
+	$g: A \to \{a\}$, which is $g(x) = a$.
+	\label{ex:InitialTerminalSet}
+\end{example}
+
+Another definition we have is that of a \textit{zero} morphism. The idea here
+is that this morphism must take the elements of an object $A$ to the
+zero element in $B$, for example, a for two vector spaces $\mathbb R^n$ and $\mathbb R^m$,
+the zero linear transformation $z:\mathbb R^n \to \mathbb R^m$ should take every vector
+$n$-dimensional vector to the $\mathbf{0}$ $m$-dimensional vector. In Category
+Theory we do not talk about morphisms according to how they act on the elements, but
+only in the objects. So we cannot define $z$ by saying to which element it maps.
+Yet, there is a way to do this in Category Theory, which gives rise to the \textit{zero} morphism
+definition.
+\begin{definition}[Zero Morphism]
+	Let $\mathcal C$ be a category, and $0$ be a zero object.
+	A morphism $z:A \to B$ is a zero morphism if there exists two morphisms
+	$f:A\to 0$ and $g:0 \to B$, such that
+	\begin{displaymath}
+		z = g \circ f.
+	\end{displaymath}
+\end{definition}
+See that this makes intuitive sense. In our example, since we wish to take
+$v \in \mathbb R^n$ to $0 \in \mathbb R^m$, we first take all $v$ to the zero object,
+which in the category of vector spaces will be the zero vector space, i.e. $\{0\}$ the space
+where $0 \in \mathbb R$ is the only element. So now all $v$ are $0$. Note that
+every linear transformation from $\{0\}$ to $\mathbb R^m$ must take $0$ to $\mathbf{0} \in \mathbb R^m$,
+otherwise, suppose that $g(0)=\mathbf{v} \neq \mathbf{0}$, hence for a scalar $\alpha$,
+\begin{displaymath}
+	g(0) = g(\alpha0) = \mathbf{v} \neq \alpha \mathbf{v} = \alpha g(0).
+\end{displaymath}
+This is a contradiction, since $g$ is a linear transformation.
+
+\begin{theorem}
+	Let $\mathcal C$ be a catgory with zero object $0$.
+	Then there exists a unique zero morphism between any two objects.
+\end{theorem}
+\begin{proof}
+	Let $A, B \in Ob_\mathcal C$.
+	By the definition of the zero object, there exists a unique
+	$f:A \to 0$ and $g:0\to B$, thus, $g \circ f$ is a zero morphism
+	by definition and is unique, since there is no other $f$ and $g$ with these respective
+	domain and codamain.
+
+	Moreover, note that if $z:A \to B$ is our zero morphism and $h:B \to C$, then
+	\begin{displaymath}
+		h \circ z = h \circ (g \circ f) = (h \circ g) \circ f.
+	\end{displaymath}
+	But, $l =(h \circ g):0 \to C$, which means that $l \circ f$ is a zero morphism.
+	The same argument works with a composition from the other direction. This means
+	that compositions with zero morphisms return zero morphisms.
+\end{proof}
+
+\subsection{Understanding Duality}
+
+In several fields of Mathematics, one is faced with the informal notion of a dual.
+Mathematicians define a concept, and call them the dual in some sense, for example,
+the dual vector space, the dual of an optimization problem, and many more.
+I always found puzzling what exactly held these things together, i.e.
+what was the underlying principle that made something a dual of another.
+
+Fortunately, Category Theory has a very elegant answer. For a given
+category $\mathcal C$, the dual category is denoted by
+$\mathcal C^{op}$ where are the objects are the same, but the morphisms
+are inverted. This means that $Ob_{\mathcal C} = Ob_{\mathcal C^{op}}$,
+and for every $f\in Mor_\mathcal (A,B)$, we have $f^{op} \in Mor_{\mathcal C^{op}}(B,A)$.
+
+This definition gives rise to a very interesting result (observation), called the
+\textit{Duality Principle}.
+
+\begin{definition}[Dual Property and Dual Statement]
+	We say $p^{op}$ is the dual property for $p$ if for all categories
+	\begin{displaymath}
+		\mathcal C \text{ has }p^{op} \iff
+		\mathcal C^{op} \text{ has }p.
+	\end{displaymath}
+
+	For a statement $s$ about a category $\mathcal C$, the dual statement is the same
+	statement, but with regards to $\mathcal C^{op}$.
+	\label{def:DualProperty}
+\end{definition}
+For example, ``a category has an initial object if and only if the dual category has a terminal object''.
+In this example, the property of having an initial object is the dual property of having a terminal object,
+since the above statement is true for any category.
+What about the dual statement? The dual for the statement ``the category $\mathcal C$ has an initial object''
+is ``the category $\mathcal C^{op}$ has an initial object''. Note that the dual statement is not always true.
+And here is where we get the duality principle.
+
+\begin{definition}[Duality Principle]
+	If a statement $s$ is true for every category, then the dual statement is also true for every
+	category.
+\end{definition}
+Let's digest a bit what this principle states. If we can prove that a certain statement is
+true for any arbitrary category, then it's dual will also be true without any effort what so ever.
+\citet{roman2017introduction} gives a nice example of this. We already prove that for any
+category, if an initial object exists, this initial object is unique up to an isomorphism.
+Note that this is a statement that is true for any category, so the duality principle applies,
+i.e. the dual statement is true. And what is the dual statement? That for every $\mathcal C^{op}$
+the initial object is unique up to an isomorphism. But an initial object in $\mathcal C^{op}$
+is a terminal object in $\mathcal C$. So we have, without any effort, that every terminal
+object is unique up to an isomorphism.
+
+\subsection{Categorical Product and Coproduct}
+
+In set theory, we are used to the notion of a Cartesian product. Similarly
+to how we did for isomorphism, the idea of a product can be generalized via
+Category Theory. Here is how it's done.
+
+\begin{definition}[Span]
+	Let $A,B$ be objects in a  category $\mathcal C$. A span
+	on $A$ and $B$ is a triple $(Z,f,g)$ where $f:Z\to A$ and
+	$g:Z\to B$ are morphisms in $\mathcal C$. This is
+	shown in figure \ref{fig:Span}.
+	\label{def:Span}
+\end{definition}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics{./notebooks/Span.pdf}
+	\end{center}
+	\caption{Diagrams showcasing a span between $A$ and $B$.}
+	\label{fig:Span}
+\end{figure}
+
+\begin{definition}[Categorical Product]
+	Let $A,B$ be objects in a  category $\mathcal C$. A span $(A\times B, \pi_1, \pi_2)$
+	is called a product between $A$ and $B$ if for every span $(Z, f, g)$ of $A$ and $B$,
+	there exists a unique morphism $h_{f,g}:Z \to A \times B$ such that
+	$h_{f,g} \fatsemi \pi_1 = f$ and $h_{f,g} \fatsemi \pi_2 = g$. That is the same
+	as saying that the diagram \ref{fig:Product} commutes.
+\end{definition}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics{./notebooks/CategoricalProduct.pdf}
+	\end{center}
+	\caption{Diagrams showcasing the categorical product. Note that the dashed line
+		is intended to highlight that the morphism $h_{f,g}$ is uniquely induced by $f$ and $g$.}
+	\label{fig:Product}
+\end{figure}
+
+Note that this definition of a product is a \textbf{universal construction}, since
+it's done via existence and uniqueness.
+Another important aspect to note is that not every pair of objects in a category might have a
+product associated.
+
+\begin{theorem}
+	For a category $\mathcal C$, a pair of objects $A$ and $B$ can have more than one
+	product construction, but if this is the case, then both these constructions will be
+	isomorphic.
+\end{theorem}
+
+\begin{proposition}[Categorical Product vs Set Product]
+	The categorical product generalizes the Cartesian product in set theory.
+\end{proposition}
+\begin{proof}
+	Consider the span $(X\times Y, \pi_1,\pi_2)$ where $\pi_1(x,y) = x$ and $\pi_2(x,y) = y$.
+	Thus, for any span $(Z, f, g)$ of $A$ and $B$, make $h_{f,g}(z) = (f(z), g(z)) \in X \times Y$.
+	This is how the Cartesian product works.
+
+	Let's drop the subscript in $h_{f,g}$.
+	Now we have to show that $h$ is a unique morphism,
+	and that $h \fatsemi \pi_1 = f$ and $h \fatsemi \pi_2 = g$.
+
+	The second condition is trivially true, just note that
+	\begin{displaymath}
+		\forall z \in Z, \ \pi_1(h(z)) = \pi_1((f(z), g(z))) = f(z) \implies
+		h \fatsemi \pi_1 = f,
+	\end{displaymath}
+	and the same argument works for $\pi_2$ and $g$.
+
+	For uniqueness, consider $h':Z\to X\times Y$ such that
+	$h' \fatsemi \pi_1 = f$, and $h' \fatsemi \pi_2 = g$.
+	If $h' \neq h$, then there is a $z \in Z$,
+	such that $h(z) = (f(z), g(z)) \neq h'(z)$. Bu then,
+	$\pi_1(h'(z)) \neq f(z)$ or $\pi_2(h'(z)) \neq g(z)$, which
+	is a contradiction.
+
+\end{proof}
+
+From the definition of a product, it's easy to think of possible dual constructions
+by just inverting the arrows (morphisms).
+
+\begin{definition}[Cospan]
+	Let $A,B$ be objects in a  category $\mathcal C$. A cospan
+	on $A$ and $B$ is a triple $(Z,f,g)$ where $f:A\to Z$ and
+	$g:B\to Z$ are morphisms in $\mathcal C$. This is
+	shown in Figure \ref{fig:Cospan}.
+\end{definition}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics{./notebooks/Cospan.pdf}
+	\end{center}
+	\caption{Diagrams showcasing a cospan between $A$ and $B$.}
+	\label{fig:Cospan}
+\end{figure}
+
+\begin{definition}[Categorical Coproduct]
+	Let $A,B$ be objects in a  category $\mathcal C$. A cospan $(A + B, i_1, i_2)$
+	is called a product between $A$ and $B$ if for every span $(Z, f, g)$ of $A$ and $B$,
+	there exists a unique morphism $h_{f,g}:Z \to A \times B$ such that
+	$i_1 \fatsemi h_{f,g} = f$ and $i_2 \fatsemi h_{f,g} = g$. That is the same
+	as saying that the diagram \ref{fig:Coproduct} commutes.
+\end{definition}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics{./notebooks/CategoricalCoproduct.pdf}
+	\end{center}
+	\caption{Diagrams showcasing the categorical coproduct. Note that the dashed line
+		is intended to highlight that the morphism $h_{f,g}$ is uniquely induced by $f$ and $g$.}
+	\label{fig:Coproduct}
+\end{figure}
+
+While the categorical product was constructed to generalize the Cartesian set product,
+the coproduct was constructed in Category Theory, so the question is
+``to what does the coproduct corresponds in set theory?''. The answer is the
+disjoint union! It's not a coincidence that we used ``$+$'' to symbolize it.
+
+The idea of a product construction induced the notion of a product object
+$A \times B$. Yet, this construction also induces another definition, of the
+so called (co)product morphism.
+
+\begin{definition}[Product and Coproduct Morphism]
+	Let $A, B, C, D \in Ob_\mathcal C$,
+	$(A\times B, \pi^{A,B}_1, \pi^{A,B}_2)$ and
+	$(C\times D, \pi^{C,D}_1, \pi^{C,D}_2)$ two products in the category $\mathcal C$,
+	$f:A\to C$ and $g:B \to D$ two morphisms in $\mathcal C$. Hence, the
+	morphism induced by $\pi_1^{A,B} \fatsemi f$ and $\pi_2^{A,B} \fatsemi g$ is
+	called product morphism and denoted by $f \times g$, where
+	\begin{displaymath}
+		f \times g := (\pi_1^{A,B} \fatsemi f, \pi_2^{A,B} \fatsemi g): A\times B \to C \times D.
+	\end{displaymath}
+\end{definition}
+
+\begin{theorem}
+	The product morphism $f\times g$ is the only morphism in $Mor_\mathcal C (A\times B, C \times D)$
+	such that
+	\begin{displaymath}
+		\pi_1^{C,D} \circ (f\times g) = f \circ \pi_1^{A,B}, \quad
+		\pi_2^{C,D} \circ (f\times g) = g \circ \pi_2^{A,B}.
+	\end{displaymath}
+\end{theorem}
+
+The coproduct morphism follows the same definition, but with coproducts.
+
+Finally, one might be wondering what is an actual example of a product morphisms.
+For sets, it's the intuitive object, e.g. for two functions $f:A \to C$
+and $g:B \to D$, the product morphism $f\times g:A\times B \to C \times D$
+is just $(f\times g) (x,y) = (f(x), g(y))$.
+
+\subsection{Cartesian Categories}
+
+\subsection{Pullback, Pushout and Equalizers}

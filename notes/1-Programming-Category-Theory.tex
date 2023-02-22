@@ -1,0 +1,30 @@
+\chapter{Category Theory and Functional Programming}
+
+Now that we've defined what a category is according to Category Theory,
+one might wonder how this relates to programming. In this chapter,
+we introduce Functional Programming and we show how CT can be defined
+within programming.
+
+\section{What is Functional Programming?}
+
+According to \citet{widman2022learning},
+there are three "main" programming paradigms: imperative programming, Object-Oriented Programming (OOP), and Functional Programming (FP).
+Imperative programming is \textit{plain} programming, in the sense that you define variables, and functions, and mutate it's values.
+OOP models programs via objects. An object is from a class, and it has a state and methods. Thus, the value mutation is usually
+encapsulated by in the state of an object.
+Finally, FP tries to eradicate (minimize) value mutation. Once a value is assigned to a variable, this should not change.
+This might seem strange, but the idea is that value mutation is usually a source of bugs and complications, thus,
+by limiting it, we can try to make our code more robust.
+
+In a sense, Functional Programming is the most unusual of the three approaches, as value mutation
+is a very natural way of thinking in code.
+
+\subsection{Is Julia an FP language?}
+
+As stated in the preface, we are going to use
+\pc{Julia} as the language to code our examples.
+\pc{Julia} is \textit{not} as FP oriented as languages such as \pc{Haskell} and \pc{Scala}.
+This helps people that are not used to FP. Also,
+the language enforces types and is \textit{not} Object-Oriented, which eases
+the process of porting FP concepts. In summary, \pc{Julia} stands close enough to FP
+without the often unusual syntax of highly FP oriented languages.

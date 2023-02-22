@@ -1,0 +1,165 @@
+\chapter{Adjoints}
+
+Adjoints, or, adjunctions, are not easily understood from the definition alone.
+A good reference for a more intuitive description is the blog Math3ma, where some of the
+intuition for adjoints was taken from. \citet{leinster2014basic} also gives a nice description.
+There are several equivalent ways of defining adjunctions, and some are easier to grasp
+than others. Before diving into rigorous definitions, we'll present some of the
+intution behind.
+
+\section{Intuitive Explanation for Adjoints}
+
+Consider two functors $F:\mathcal C \to \mathcal D$ and $G:\mathcal D \to \mathcal C$.
+We already saw that there is a weaker notion
+of equivalence between categories(\ref{def:EquivalenceCategories}), where instead of
+requiring the existence of an isomorphism given by
+$F \circ G = id_\mathcal D$ and $F \circ G = id_\mathcal C$, we only
+ask for $F \circ G \cong id_\mathcal D$ and $G \circ F \cong id_\mathcal C$.
+
+We can go further and devise an even weaker notion of ``equality''
+between categories.
+This is where adjunctions come in. Instead
+of isomorphisms, we can ask for the existence of two morphisms
+(which in this context will be natural transformations),
+where one morphism is $\varepsilon:F\circ G \to id_\mathcal D$ (called counit) and another morphism
+is $\eta:id_\mathcal C \to G\circ F $ (called unit), and they are somehow related.
+
+Another way to view adjunctions is the following. Given two functors $F:\mathcal C \to \mathcal D$
+and $G:\mathcal D \to \mathcal C$. We say that $F$ is the left adjoint of $G$, which we write as $F \dashv G$,
+if for every $C \in Ob_\mathcal C$ and every $D \in Ob_\mathcal D$, a morphism from $F(C)$ to $D$
+is essentially the same as a morphism from $C$ to $G(D)$.
+
+% Note that for $c \in Ob_\mathcal C$, then $\eta_c: c \to G(F(c))$ is $c \mapsto G(F(c))$. Similarly,
+% $\varepsilon_{F(c)}: F(G(F(c))) \to F(c)$ is $F \circ G \circ F(c) \mapsto F(c)$.
+
+% Now, there is a reason that our adjoints are either left or right. The adjunction
+% is how we can ``translate'' between categories where one is not as ``expressive''
+% as the other. How so? Consider for example the case of Linear Algebra, where
+% for a given matrix $F \in \mathbb R^{n\times m}$ such that $n > m$. Now, suppose
+% that there exists a matrix $G \in \mathbb R^{m \times n}$ such that
+% $G$ is the pseudoinverse of $F$ and $G F = I_m$, i.e. the \textit{left inverse}.
+% Since $G$ is the pseudoinverse, we have that $F G F = F$ and
+% $G F G = G$.
+
+% The pseudoinverse captures exactly the relation we were looking for. If $F$ and $G$
+% are functors, we want to categorically specify that for them to be adjoints, it's
+% required that $F \circ G \circ F = F$ and $G \circ F \circ G = G$.
+% This can be done using the natural transformations. Note that we want to make
+% \begin{align*}
+%   F \circ G \circ F(c) &= F \circ \eta_c(c) = F(c) = \varepsilon_c(c), \\
+%   G \circ F \circ G(F(c)) &= G\circ \varepsilon_{F(c)}(F(c)) = G(F(c)) = \eta_c(c),
+% \end{align*}
+% where we considered $\eta_c$ as a function, and $\eta_c(c) = G(F(c))$.
+% Thus, the restriction we want to impose is that
+% \begin{align*}
+%   F \circ \eta_c(c) = \varepsilon_c(c), \quad
+%   G\circ \varepsilon_{F(c)}(F(c)) = \eta_c(c).
+% \end{align*}
+
+
+% In this example, the category of vector spaces in $\mathbb R^m$ is ``smaller''
+% than $\mathbb R^n$, yet, we want to somehow translate between them. The idea
+% of how to properly translate between vector spaces is captured
+% by inverse matrices. When it's not possible to find inverse, the \textit{best translation}
+% is captured by the pseudoinverse, which is what the adjoint is trying to capture.
+% The pseudoinverse $G$ is the left ajoint of $F$.
+
+% Hopefully, this motivates the idea of adjoints. In a sense, one wishes to
+% formalize this types of operations in which there is some sort of translation
+% between categories with different expressiveness. We've shown how this is somehow
+% related to weakening the requirement for the existence of isomorphisms.
+% Now, let's indeed formalize a definition.
+
+% But what this relation should be? Here an analogy from Linear Algebra might help.
+
+% Remember the notion of a pseudoinverse of a matrix $A \in \mathbb R^{n\times m}$,
+% denoted by $A^{\dagger} \in \mathbb R^{m \times n}$.
+% We have that $A A^{\dagger}A = A$, and $A^{\dagger} A A^{\dagger} = A^{\dagger}$.
+% How does this relate to our case? Note that $F\circ id_\mathcal C = F$, hence
+% for $c \in Ob_\mathcal C$, we have $F(c) \in Ob_\mathcal D$, thus
+% \begin{align*}
+%   \varepsilon_{F(c)}:(F\circ G)(F(c))\to id_\mathcal D (F(c))\\
+%   \varepsilon_{F(c)}:(F\circ G)(F(c))\to F(c).
+% \end{align*}
+
+% In the example of the pseudoinverse, the matrices are functors between
+% vector spaces, 
+% This means that somehow, via $\varepsilon$, we have $F G F = F$
+
+
+\section{General Definitions}
+
+The definition we are going to present assumes that both categories are locally small. This will
+be enough for most applications. Yet, there are a more complicated definitions that also takes into
+account categories that are not locally small. Remember that a category $\mathcal C$
+is locally small if for every pair of objects $A$ and $B$, then $Mor_\mathcal C (A,B)$ is a set.
+
+Before formalizing adjoints, let's present some helpful definitions. This is mostly based
+on \citet{borceux1994handbook}.
+
+\begin{definition}[Reflection]
+	Let $F:\mathcal C \to \mathcal D$ be a functor and $d \in Ob_\mathcal D$.
+	A reflection of $d$ along $F$ is a pair $(R_d, \eta_d)$ where
+	\begin{enumerate}[(i)]
+		\item $R_d \in Ob_\mathcal C$ and $\eta_d \in Mor_{\mathcal D}(d, F(R_d))$;
+		\item if $c \in Ob_\mathcal C$ and $f \in Mor_{\mathcal D}(d,F(c))$, there exists
+		      a unique morphism $g:R_d \to c$ such that
+		      $F(g) \circ \eta_d = f$.
+	\end{enumerate}
+\end{definition}
+
+\begin{proposition}
+	Let $F:\mathcal C \to \mathcal D$ be a functor and $d \in Ob_\mathcal D$.
+	When the reflection of $d$ along $F$ exists, it is unique up to an isomorphism.
+\end{proposition}
+
+\begin{proposition}
+	Let $F:\mathcal C \to \mathcal D$ be a functor and assume that for every
+	$d \in Ob_\mathcal D$, the reflection of $d$ along $F$ exists. Thus, there
+	exists a functor $R:\mathcal D \to \mathcal C$ such that
+	\begin{enumerate}[(i)]
+		\item $\forall d \in Ob_\mathcal D, \ R(d) = R_d$;
+		\item $(\eta_d:d \to FRd)_{d \in Ob_\mathcal D}$ is a natural transformation.
+	\end{enumerate}
+\end{proposition}
+
+Now we can present the first definition of adjoint.
+\begin{definition}[Adjoint]
+	A functor $L:\mathcal D \to \mathcal C$ is a left adjoint to the functor
+	$F:\mathcal C \to \mathcal D$ if there exists a natural transformation
+	$\eta:id_{\mathcal D} \Rightarrow F \circ L$ such that for every
+	$d \in \mathcal D$, the tuple $(Ld, \eta_d)$ is a reflection of $d$
+	along $F$.
+\end{definition}
+
+\begin{definition}[Ajdoint]
+	Let $\mathcal C$ and $\mathcal D$ be locally small categories. The adjoints (adjunction) between
+	$\mathcal C$ and $\mathcal D$ are the functors
+	\begin{displaymath}
+		L:\mathcal C \to \mathcal D, \quad R:\mathcal D \to \mathcal C,
+	\end{displaymath}
+	together with a natural transformation $\alpha$ such that for every
+	$A \in \mathcal C$ and $B, \in \mathcal D$,
+	\begin{displaymath}
+		\alpha_{A,B}: Mor_\mathcal D (L(A), B) \overset{\cong}{\longrightarrow} Mor_\mathcal C (A, R(B)),
+	\end{displaymath}
+	i.e. for every pair of objects $A \in \mathcal C$  and $B \in \mathcal D$, there is an isomorphism
+	between the sets $Mor_\mathcal D(L(A), B)$ and $Mor_\mathcal C (A, R(B))$.
+	Also,
+\end{definition}
+
+\begin{shaded}
+	\textbf{Adjoints in Category Theory vs. Linear Algebra.} Names are suggestive in Mathematics,
+	but even more so in Category Theory. Note that the definition above of an adjoint resembles
+	somewhat the idea of adjoint linear transformation in Linear Algebra. Remember:
+	\begin{displaymath}
+		\langle A x, y \rangle  = \langle x, A^* y \rangle, \quad \forall x,y \in X,
+	\end{displaymath}
+	where $X$ is our vector space and $A: X \to X$ is a linear transformation.
+\end{shaded}
+
+\begin{proposition}
+	Let $\mathcal C$ and $\mathcal D$ be two locally small categories, and $F:\mathcal C \to \mathcal D$
+	a functor. If both functors $G,G':\mathcal D \to \mathcal C$ are right (or left) adjoints
+	to $F$, then there exists a natural isomorphism between $G$ and $G'$.
+\end{proposition}

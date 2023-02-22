@@ -1,0 +1,69 @@
+\addvspace {10\p@ }
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.1.1\else \numberline {1.1.1}Definition\fi \thmtformatoptarg {Universe}}{1}{definition.1.1.1}%
+\contentsline {proposition}{\ifthmt@listswap Proposition\nobreakspace {}1.1.2\else \numberline {1.1.2}Proposition\fi }{2}{proposition.1.1.2}%
+\contentsline {axiom}{\ifthmt@listswap Axiom\nobreakspace {}1.1.1\else \numberline {1.1.1}Axiom\fi }{2}{axiom.1.1.1}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.1.3\else \numberline {1.1.3}Definition\fi }{2}{definition.1.1.3}%
+\contentsline {axiom}{\ifthmt@listswap Axiom\nobreakspace {}1.1.2\else \numberline {1.1.2}Axiom\fi \thmtformatoptarg {Gödel-Bernays}}{2}{axiom.1.1.2}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.1.4\else \numberline {1.1.4}Definition\fi }{2}{definition.1.1.4}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.1\else \numberline {1.2.1}Definition\fi \thmtformatoptarg {Category}}{3}{definition.1.2.1}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.2\else \numberline {1.2.2}Definition\fi \thmtformatoptarg {Small Category}}{3}{definition.1.2.2}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.3\else \numberline {1.2.3}Definition\fi \thmtformatoptarg {Locally Small Category}}{3}{definition.1.2.3}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}1.2.1\else \numberline {1.2.1}Example\fi \thmtformatoptarg {Category $\bm {1}$}}{4}{example.1.2.1}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}1.2.2\else \numberline {1.2.2}Example\fi \thmtformatoptarg {Category $\bm {2}$ and $\bm {3}$}}{4}{example.1.2.2}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}1.2.3\else \numberline {1.2.3}Example\fi \thmtformatoptarg {Discrete Categories}}{5}{example.1.2.3}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}1.2.4\else \numberline {1.2.4}Example\fi \thmtformatoptarg {Preorders}}{5}{example.1.2.4}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}1.2.5\else \numberline {1.2.5}Example\fi \thmtformatoptarg {Monoids}}{6}{example.1.2.5}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.4\else \numberline {1.2.4}Definition\fi \thmtformatoptarg {Categorical Isomorphism}}{7}{definition.1.2.4}%
+\contentsline {proposition}{\ifthmt@listswap Proposition\nobreakspace {}1.2.5\else \numberline {1.2.5}Proposition\fi }{7}{proposition.1.2.5}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.6\else \numberline {1.2.6}Definition\fi \thmtformatoptarg {Monomorphism}}{8}{definition.1.2.6}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.7\else \numberline {1.2.7}Definition\fi \thmtformatoptarg {Epimorphism}}{8}{definition.1.2.7}%
+\contentsline {proposition}{\ifthmt@listswap Proposition\nobreakspace {}1.2.8\else \numberline {1.2.8}Proposition\fi }{8}{proposition.1.2.8}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.9\else \numberline {1.2.9}Definition\fi \thmtformatoptarg {Endomorphism and Automorphism}}{9}{definition.1.2.9}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.10\else \numberline {1.2.10}Definition\fi \thmtformatoptarg {Zero, Initial and Terminal}}{9}{definition.1.2.10}%
+\contentsline {theorem}{\ifthmt@listswap Theorem\nobreakspace {}1.2.11\else \numberline {1.2.11}Theorem\fi }{10}{theorem.1.2.11}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}1.2.6\else \numberline {1.2.6}Example\fi \thmtformatoptarg {Terminal and Initial Objects in $\mathbf {Set}$}}{10}{example.1.2.6}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.12\else \numberline {1.2.12}Definition\fi \thmtformatoptarg {Zero Morphism}}{11}{definition.1.2.12}%
+\contentsline {theorem}{\ifthmt@listswap Theorem\nobreakspace {}1.2.13\else \numberline {1.2.13}Theorem\fi }{11}{theorem.1.2.13}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.14\else \numberline {1.2.14}Definition\fi \thmtformatoptarg {Dual Property and Dual Statement}}{12}{definition.1.2.14}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.15\else \numberline {1.2.15}Definition\fi \thmtformatoptarg {Duality Principle}}{12}{definition.1.2.15}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.16\else \numberline {1.2.16}Definition\fi \thmtformatoptarg {Span}}{12}{definition.1.2.16}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.17\else \numberline {1.2.17}Definition\fi \thmtformatoptarg {Categorical Product}}{13}{definition.1.2.17}%
+\contentsline {theorem}{\ifthmt@listswap Theorem\nobreakspace {}1.2.18\else \numberline {1.2.18}Theorem\fi }{13}{theorem.1.2.18}%
+\contentsline {proposition}{\ifthmt@listswap Proposition\nobreakspace {}1.2.19\else \numberline {1.2.19}Proposition\fi \thmtformatoptarg {Categorical Product vs Set Product}}{13}{proposition.1.2.19}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.20\else \numberline {1.2.20}Definition\fi \thmtformatoptarg {Cospan}}{14}{definition.1.2.20}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.21\else \numberline {1.2.21}Definition\fi \thmtformatoptarg {Categorical Coproduct}}{14}{definition.1.2.21}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}1.2.22\else \numberline {1.2.22}Definition\fi \thmtformatoptarg {Product and Coproduct Morphism}}{15}{definition.1.2.22}%
+\contentsline {theorem}{\ifthmt@listswap Theorem\nobreakspace {}1.2.23\else \numberline {1.2.23}Theorem\fi }{15}{theorem.1.2.23}%
+\addvspace {10\p@ }
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}3.1.1\else \numberline {3.1.1}Definition\fi \thmtformatoptarg {Functor}}{18}{definition.3.1.1}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}3.1.2\else \numberline {3.1.2}Lemma\fi \thmtformatoptarg {Contravariant Functor}}{19}{lemma.3.1.2}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}3.1.1\else \numberline {3.1.1}Example\fi \thmtformatoptarg {Power set functors}}{20}{example.3.1.1}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}3.2.1\else \numberline {3.2.1}Definition\fi \thmtformatoptarg {Functor composition}}{20}{definition.3.2.1}%
+\contentsline {theorem}{\ifthmt@listswap Theorem\nobreakspace {}3.2.2\else \numberline {3.2.2}Theorem\fi \thmtformatoptarg {Category of Small Categories}}{21}{theorem.3.2.2}%
+\contentsline {proposition}{\ifthmt@listswap Proposition\nobreakspace {}3.2.3\else \numberline {3.2.3}Proposition\fi \thmtformatoptarg {Comprehension Scheme from \citet {borceux1994handbook}}}{21}{proposition.3.2.3}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}3.3.1\else \numberline {3.3.1}Definition\fi \thmtformatoptarg {Faithful, Full, Fully Faithful and Embedding}}{21}{definition.3.3.1}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}3.4.1\else \numberline {3.4.1}Definition\fi \thmtformatoptarg {Subcategory}}{22}{definition.3.4.1}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}3.5.1\else \numberline {3.5.1}Example\fi \thmtformatoptarg {Power Set Functor}}{22}{example.3.5.1}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}3.5.2\else \numberline {3.5.2}Example\fi \thmtformatoptarg {Identity Functor}}{22}{example.3.5.2}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}3.5.3\else \numberline {3.5.3}Example\fi \thmtformatoptarg {Inclusion Functor}}{22}{example.3.5.3}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}3.6.1\else \numberline {3.6.1}Definition\fi \thmtformatoptarg {Diagram}}{23}{definition.3.6.1}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}3.6.2\else \numberline {3.6.2}Definition\fi \thmtformatoptarg {Commutative Diagram}}{23}{definition.3.6.2}%
+\addvspace {10\p@ }
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.1.1\else \numberline {A.1.1}Definition\fi \thmtformatoptarg {Groups}}{25}{definition.A.1.1}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.1.2\else \numberline {A.1.2}Definition\fi \thmtformatoptarg {Abelian Group}}{25}{definition.A.1.2}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}A.1.1\else \numberline {A.1.1}Example\fi }{25}{example.A.1.1}%
+\contentsline {proposition}{\ifthmt@listswap Proposition\nobreakspace {}A.1.3\else \numberline {A.1.3}Proposition\fi \thmtformatoptarg {Group Cancellation}}{26}{proposition.A.1.3}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.1.4\else \numberline {A.1.4}Definition\fi \thmtformatoptarg {Subgroup Generated}}{26}{definition.A.1.4}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.1.5\else \numberline {A.1.5}Definition\fi \thmtformatoptarg {Cyclic Group}}{26}{definition.A.1.5}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.1.6\else \numberline {A.1.6}Definition\fi \thmtformatoptarg {Order of Groups}}{26}{definition.A.1.6}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.1.7\else \numberline {A.1.7}Definition\fi \thmtformatoptarg {Homomorphism and Isomorphism}}{26}{definition.A.1.7}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.1.8\else \numberline {A.1.8}Definition\fi \thmtformatoptarg {Normal / Self-conjugate}}{26}{definition.A.1.8}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.2.1\else \numberline {A.2.1}Definition\fi \thmtformatoptarg {Automorphism}}{26}{definition.A.2.1}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.2.2\else \numberline {A.2.2}Definition\fi \thmtformatoptarg {Grupoid and Groups}}{26}{definition.A.2.2}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.3.1\else \numberline {A.3.1}Definition\fi \thmtformatoptarg {Ring}}{27}{definition.A.3.1}%
+\contentsline {proposition}{\ifthmt@listswap Proposition\nobreakspace {}A.3.2\else \numberline {A.3.2}Proposition\fi }{27}{proposition.A.3.2}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.3.3\else \numberline {A.3.3}Definition\fi \thmtformatoptarg {Commutative Ring}}{27}{definition.A.3.3}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.3.4\else \numberline {A.3.4}Definition\fi \thmtformatoptarg {Zero-Divisor}}{27}{definition.A.3.4}%
+\contentsline {example}{\ifthmt@listswap Example\nobreakspace {}A.3.1\else \numberline {A.3.1}Example\fi \thmtformatoptarg {$\mathbb Z \setminus n \mathbb Z$}}{28}{example.A.3.1}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.3.5\else \numberline {A.3.5}Definition\fi \thmtformatoptarg {$R$-Module}}{28}{definition.A.3.5}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}A.3.6\else \numberline {A.3.6}Definition\fi \thmtformatoptarg {$R$-Algebra}}{28}{definition.A.3.6}%

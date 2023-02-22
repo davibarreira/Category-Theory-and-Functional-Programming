@@ -1,0 +1,26 @@
+\contentsline {chapter}{Preface}{ii}{chapter*.1}%
+\contentsline {chapter}{Notation}{viii}{chapter*.5}%
+\contentsline {chapter}{\numberline {1}Category Theory - The Very Basic}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Universes, Sets and Classes}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}What is a Category?}{3}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Examples of Categories}{4}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Isomorphism, monomorphism and epimorphism}{7}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Zero, Initial and Terminal Objects}{9}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Understanding Duality}{11}{subsection.1.2.4}%
+\contentsline {subsection}{\numberline {1.2.5}Categorical Product and Coproduct}{12}{subsection.1.2.5}%
+\contentsline {subsection}{\numberline {1.2.6}Cartesian Categories}{15}{subsection.1.2.6}%
+\contentsline {subsection}{\numberline {1.2.7}Pullback, Pushout and Equalizers}{15}{subsection.1.2.7}%
+\contentsline {chapter}{\numberline {2}Category Theory and Functional Programming}{16}{chapter.2}%
+\contentsline {section}{\numberline {2.1}What is Functional Programming?}{16}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Is Julia an FP language?}{16}{subsection.2.1.1}%
+\contentsline {chapter}{\numberline {3}Functors}{18}{chapter.3}%
+\contentsline {section}{\numberline {3.1}What is a Functor?}{18}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Category of Small Categories}{20}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Types of Functors}{21}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Subcategories}{22}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Relevant Examples of Functors}{22}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Formalizing Diagrams}{22}{section.3.6}%
+\contentsline {chapter}{\numberline {A}Abstract Algebra}{25}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Initial Definitions for Groups}{25}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Groups and Category Theory}{26}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Rings and Modules}{27}{section.A.3}%
