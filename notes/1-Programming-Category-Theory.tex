@@ -2,8 +2,8 @@
 
 Now that we've defined what a category is according to Category Theory,
 one might wonder how this relates to programming. In this chapter,
-we introduce Functional Programming and we show how CT can be defined
-within programming.
+we introduce Functional Programming,
+and we show how FP and CT are related.
 
 \section{Introduction to Functional Programming}
 
@@ -130,7 +130,8 @@ julia> s = Square(10,Point3D(0,0,0));
 julia> area(s)
 100
 \end{lstlisting}
-In our example, we set the default area of a shape to zero by defining our \pc{area(s::Shape) = 0.0}. For the
+In our example, we set the default area of a shape to zero by defining our \pc{area(s::Shape)} equal
+to \pc{0.0}. For the
 shapes that we know how to compute the area, we write the formulas (e.g. square and circle). Note that
 we wrote \pc{Square <: Shape} to indicate that both of our structs are subtypes of \pc{Shape}.
 Note how Julia is \textit{not} Object-Oriented. The type \pc{Square} and the type \pc{Circle}
@@ -175,7 +176,7 @@ julia> myloop(0)
 \subsection{Side Effects, Pure Functions and Referential Transparency}
 
 
-Consider a function \pc{f}. A function produces a side effect if it affects anything outside of it's score. For example:
+Consider a function \pc{f}. A function produces a side effect if it affects anything outside of it's scope. For example:
 \bigskip
 \begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true, escapeinside={(@}{@)}]
 x = []
@@ -194,7 +195,7 @@ Note that this is \textit{just} a notation.
 The exclamation point does not modify the function.
 A function without side effects is called \textit{pure}.
 
-Another important aspect is "referencial transparency".
+Another important aspect is ``referencial transparency''.
 This means that for a given input \pc{x} a function should always return the same output \pc{y}.
 This seems logical, but there are clear examples that break this. For example:
 \bigskip
@@ -204,13 +205,13 @@ julia> rand(1)
 (@ 0.024980886821626025@)
 \end{lstlisting}
 Note that, in Mathematics,
-what we define as a function usually follows these two principals,
-i.e. mathematical functions are pure and referencially transparent.
+what we define as a function usually follows these two principles,
+i.e. mathematical functions are pure and referentially transparent.
 
 \subsection{Higher Order Functions}
 
 A high order function is a function that receives functions as input or that returns a function as output.
-In FP, we want functions to be "first-class citizens", meaninig that we can pass them to variables and to other
+In FP, we want functions to be ``first-class citizens'', meaning that we can pass them to variables and to other
 functions just like a regular value.
 Here is one example:
 
@@ -259,7 +260,8 @@ julia> x
 1:10
 \end{lstlisting}
 
-Note that our function did not evaluate x.
+Note that our function did not evaluate x. Lastly, we use the \pc{collect}
+function to actually evaluate our iterator.
 \bigskip
 \begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
 julia> collect((squarelazy ∘ take)(x,2))
@@ -270,4 +272,95 @@ julia> collect((squarelazy ∘ take)(x,2))
 
 \section{Categories in Programming}
 
+The emphasis of FP in controlling side-effects,
+having referentially transparent functions and enforcing types
+makes programming functions similar to functions in set-theory.
+We know that in Category Theory we have a category $\mathbf{Set}$,
+where sets are objects and functions are morphisms. Using $\mathbf{Set}$
+as an analogy, we can define a category $\mathbf{Prog}$, where
+types are objects and pure referentially transparent functions are morphisms.
+Thus, the analogy between $\mathbf{Prog}$ and $\mathbf{Set}$ is clear.
+Each type corresponds to a set and each programming function corresponds to a set-theoretic function.
 
+Note that this correspondence is not perfect.
+Functions in programming, even if pure and referentially transparent,
+might still be non-terminating; and deciding whether a function is non-terminating is undecidable (halting problem).
+Hence, programming functions cannot be equated to functions in set-theory. As pointed out by
+\citet{milewski2018category}, a possible solution is adding a value \textit{bottom}
+to each type as to represent the possibility of non-termination. Yet, this causes other
+theoretical problems.
+
+From a practical point of view, we follow \citet{milewski2018category} and we ignore
+non-terminating functions. Thus, our category $\mathbf{Prog}$ can be thought as a
+subcategory of $\mathbf{Set}$\footnote{We claim that $\mathbf{Prog}$ is only subcategory
+of $\mathbf{Set}$ because not necessarily all sets have a corresponding type. Consider
+for example that type \pc{Int} is not actually $\mathbb Z$, but only the finite set
+of numbers going from $-2^{63}$ to $2^{63}-1$.} with each type corresponding to set, and each programming function
+corresponding to a set-theoretic function.
+
+As we've pointed out, Julia does not enforce functions to be pure or referentially transparent.
+Julia also does check if two composing functions match input and output types. Thus, this is left
+for us programmers to enforce. If the functions we define follow these theoretical assumptions
+(i.e. our functions are pure, referentially transparent, terminate, and
+only compose with functions that match domain and codomain), then we can assume that
+we are working in the category $\mathbf{Prog}$.
+
+Once we stablish that we are in the category $\mathbf{Prog}$, we have successfully
+connected the world of programming and the world of mathematics.
+This means that we can now use mathematical tools to prove properties
+about our programs. We can also import concepts from Category
+Theory and use it for programming purposes. In fact, Functional Programming does just that.
+Many software patterns of Functional Programming are based on Category Theory.
+Functors, Monoids and Monads are some of the many examples.
+
+
+\subsection{Exploring $\mathbf{Prog}(J)$ with Julia}
+
+Note that our previous explanation of $\mathbf{Prog}$ did not define
+what types are encompassed on $\mathbf{Prog}$. The types
+present actually depends on the programming language we are considering.
+It's possible that a programming language has a type that represents real numbers,
+while other does not. Also, there are programming languages that have the possibility
+of defining new types, while other might not. Hence, it's more accurate
+to define a category as $\mathbf{Prog}(L)$, where $L$ is the prog
+
+First, let's give a definition for our category.
+\begin{definition}[$\mathbf{Prog}$]
+	Category $\mathbf{Prog}$ is a subcategory of $\mathbf{Set}$ where programming
+	types are the objects and correspond to a set. The morphisms are pure
+	referentially transparent and terminating functions, which correspond to
+	a function in $\mathbf{Set}$.
+\end{definition}
+
+Since $\mathbf{Prog}$ is a subcategory of $\mathbf{Set}$, let's present
+some of the properties of $\mathbf{Set}$ and show their correspondence in $\mathbf{Prog}$.
+First, the initial object of $\mathbf{Set}$ is the empty set.
+In Julia, the initial object is the type \pc{::Union\{\}}.
+This type is also known as \pc{Base.Bottom}, and it's a subtype of every type in Julia, including
+itself. Thus, it behaves just like $\varnothing$, in the sense that $\varnothing \subset A$
+for any set $A$ including $\varnothing$.
+
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+julia> Union{} <: Int, Union{} <: Nothing, Union{} <: Union{}
+(true, true, true)
+\end{lstlisting}
+
+Note that a function $f:\varnothing \to A$ cannot ever be called, since we cannot
+provide an element of $\varnothing$. In the same way, a function
+\pc{f(x::Union\{\})} cannot be called, because there is no instance of type \pc{Union\{\}}.
+
+The terminal object of $\mathbf{Set}$ are the singleton sets. Note that they all are initial objects,
+but they are all isomorphic.
+In Julia, the \pc{Nothing} type is a singleton type, which is the value \pc{nothing}.
+So is the type \pc{Tuple\{\}}, which only has \pc{()} as element.
+We can also define our own terminal types using a struct:
+
+\bigskip
+\begin{lstlisting}[language=JuliaLocal, style=julia, texcl=true]
+struct Terminal end
+
+julia> Base.issingletontype(Terminal)
+True
+\end{lstlisting}
+The only element of our type \pc{Terminal} is \pc{Terminal()}.
