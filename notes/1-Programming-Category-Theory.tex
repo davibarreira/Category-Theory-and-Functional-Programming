@@ -5,19 +5,29 @@ one might wonder how this relates to programming. In this chapter,
 we introduce Functional Programming,
 and we show how FP and CT are related.
 
-\section{Introduction to Functional Programming}
+\section{Practical Introduction to Functional Programming}
 
 According to \citet{widman2022learning},
 there are three ``main'' programming paradigms: imperative programming, Object-Oriented Programming (OOP), and Functional Programming (FP).
 Imperative programming is \textit{plain} programming, in the sense that you define variables, and functions, and mutate it's values.
 OOP models programs via objects. An object is from a class, and it has a state and methods. Thus, the value mutation is usually
 encapsulated by in the state of an object.
-Finally, FP tries to eradicate (minimize) value mutation. Once a value is assigned to a variable, this should not change.
+Finally, FP tries to eradicate value mutation. Once a value is assigned to a variable, this should not change.
 This might seem strange, but the idea is that value mutation is usually a source of bugs and complications, thus,
-by limiting it, we can try to make our code more robust.
+by limiting it, we can try to make our code more robust. This property is usually called ``immutability''.
+Besides immutability, \citet{widman2022learning} lists four other core tenants of Functional Programming,
+which are referential transparency,
+pure functions, higher order functions and lazy evaluations.
 
 In a sense, Functional Programming is the most unusual of the three approaches, as value mutation
-is a very natural way of thinking in code.
+is a very natural way of thinking in code. Yet, by avoiding value mutation, functions
+in FP have a closer resemblance to what we call functions in mathematics (more specifically in Set Theory).
+
+The definition that we gave for Functional Programming was pragmatic. One important
+aspect missing from such definition was the necessity of working with data types.
+Data types are at the core of how FP relates to Category Theory.
+A more formal definition of Functional Programming is given further in the chapter.
+In order to do this, we will need to introduce Type Theory.
 
 \subsection{Is Julia an FP language?}
 
@@ -174,7 +184,6 @@ julia> myloop(0)
 \end{lstlisting}
 
 \subsection{Side Effects, Pure Functions and Referential Transparency}
-
 
 Consider a function \pc{f}. A function produces a side effect if it affects anything outside of it's scope. For example:
 \bigskip
