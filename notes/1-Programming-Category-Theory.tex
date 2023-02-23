@@ -5,7 +5,7 @@ one might wonder how this relates to programming. In this chapter,
 we introduce Functional Programming,
 and we show how FP and CT are related.
 
-\section{Practical Introduction to Functional Programming}
+\section{Introduction to Functional Programming}
 
 According to \citet{widman2022learning},
 there are three ``main'' programming paradigms: imperative programming, Object-Oriented Programming (OOP), and Functional Programming (FP).
@@ -20,14 +20,12 @@ which are referential transparency,
 pure functions, higher order functions and lazy evaluations.
 
 In a sense, Functional Programming is the most unusual of the three approaches, as value mutation
-is a very natural way of thinking in code. Yet, by avoiding value mutation, functions
+is a very natural way of thinking when coding. Yet, by avoiding value mutation, functions
 in FP have a closer resemblance to what we call functions in mathematics (more specifically in Set Theory).
 
 The definition that we gave for Functional Programming was pragmatic. One important
-aspect missing from such definition was the necessity of working with data types.
-Data types are at the core of how FP relates to Category Theory.
-A more formal definition of Functional Programming is given further in the chapter.
-In order to do this, we will need to introduce Type Theory.
+aspect missing from such definition was the necessity of working with types.
+Types are at the core of how FP relates to Category Theory.
 
 \subsection{Is Julia an FP language?}
 
@@ -283,38 +281,48 @@ julia> collect((squarelazy ∘ take)(x,2))
 
 The emphasis of FP in controlling side-effects,
 having referentially transparent functions and enforcing types
-makes programming functions similar to functions in set-theory.
+makes programming functions similar to functions in Set Theory.
 We know that in Category Theory we have a category $\mathbf{Set}$,
 where sets are objects and functions are morphisms. Using $\mathbf{Set}$
-as an analogy, we can define a category $\mathbf{Prog}$, where
+as an analogy, we can try to define a category $\mathbf{Prog}(L)$ where
 types are objects and pure referentially transparent functions are morphisms.
-Thus, the analogy between $\mathbf{Prog}$ and $\mathbf{Set}$ is clear.
+Thus, the analogy between $\mathbf{Prog}(L)$ and $\mathbf{Set}$ is clear.
 Each type corresponds to a set and each programming function corresponds to a set-theoretic function.
+The $L$ in $\mathbf{Prog}(L)$, represents a Functional Programming language.
+This is necessary since each programming language
+might have a different collection of types.
 
-Note that this correspondence is not perfect.
-Functions in programming, even if pure and referentially transparent,
-might still be non-terminating; and deciding whether a function is non-terminating is undecidable (halting problem).
-Hence, programming functions cannot be equated to functions in set-theory. As pointed out by
-\citet{milewski2018category}, a possible solution is adding a value \textit{bottom}
-to each type as to represent the possibility of non-termination. Yet, this causes other
-theoretical problems.
+Note that this correspondence of $\mathbf{Prog}(L)$ and $\mathbf{Set}$ is not perfect.
+Functions in programming have an internal algorithm that defines how to
+go from the input to the output, while functions in Set Theory are simply another set.
+Thus, two functions might always produce the same value for the same input, but with
+very distinct algorithms. Another possible issue is that even if pure and referentially transparent,
+a function might still be non-terminating.
 
-From a practical point of view, we follow \citet{milewski2018category} and we ignore
-non-terminating functions. Thus, our category $\mathbf{Prog}$ can be thought as a
-subcategory of $\mathbf{Set}$\footnote{We claim that $\mathbf{Prog}$ is only subcategory
-of $\mathbf{Set}$ because not necessarily all sets have a corresponding type. Consider
-for example that type \pc{Int} is not actually $\mathbb Z$, but only the finite set
-of numbers going from $-2^{63}$ to $2^{63}-1$.} with each type corresponding to set, and each programming function
-corresponding to a set-theoretic function.
+Hence, to make our correspondence precise, we need more simplifying assumptions
+about the behaviour of our programming language. First, we equate our programming functions
+to mathematical functions by establishing that two programming functions
+\pc{f(x::T)} and \pc{g(x::T)} are ``isomorphic'' (the same) if they are denotationally the same,
+i.e. if for every \pc{x::T} we have \pc{f(x) = g(x)}. Thus, we are restricted
+to pure, referentially transparent and terminating functions, plus this equivalence relation.
+
+Let's give a definition for our category.
+\begin{definition}[$\mathbf{Prog}(L)$]
+	Category $\mathbf{Prog}(L)$ is a subcategory of $\mathbf{Set}$ where programming
+	types are the objects and correspond to a set. The morphisms are pure
+	referentially transparent and terminating functions, which correspond to
+	a function in $\mathbf{Set}$, i.e. two programming functions are the same
+	in $\mathbf{Prog}(L)$ if they correspond to the same function in $\mathbf{Set}$.
+\end{definition}
 
 As we've pointed out, Julia does not enforce functions to be pure or referentially transparent.
 Julia also does check if two composing functions match input and output types. Thus, this is left
 for us programmers to enforce. If the functions we define follow these theoretical assumptions
 (i.e. our functions are pure, referentially transparent, terminate, and
 only compose with functions that match domain and codomain), then we can assume that
-we are working in the category $\mathbf{Prog}$.
+we are working in a subcategory of $\mathbf{Set}$.
 
-Once we stablish that we are in the category $\mathbf{Prog}$, we have successfully
+Once we stablish that we are in a category, we have successfully
 connected the world of programming and the world of mathematics.
 This means that we can now use mathematical tools to prove properties
 about our programs. We can also import concepts from Category
@@ -323,30 +331,42 @@ Many software patterns of Functional Programming are based on Category Theory.
 Functors, Monoids and Monads are some of the many examples.
 
 
-\subsection{Exploring $\mathbf{Prog}(J)$ with Julia}
+\subsection{Exploring $\mathbf{Prog}(J)$}
 
-Note that our previous explanation of $\mathbf{Prog}$ did not define
-what types are encompassed on $\mathbf{Prog}$. The types
-present actually depends on the programming language we are considering.
-It's possible that a programming language has a type that represents real numbers,
-while other does not. Also, there are programming languages that have the possibility
-of defining new types, while other might not. Hence, it's more accurate
-to define a category as $\mathbf{Prog}(L)$, where $L$ is the prog
+Our category $\mathbf{Prog}(L)$ is actually not a single category, but a whole
+family of categories that vary depending on the underlying language $L$.
+A very simple example would be a language $S$ that only has types \pc{Integer} and \pc{String}.
+Thus, the category $\mathbf{Prog}(S)$ would be the subcategory of $\mathbf{Set}$
+where the objects are $\mathbf Z$ and the set of all possible strings, together with
+all functions acting on these objects.
+Thus, as our underlying programming language introduces more types, the size of $\mathbf{Prog}(L)$
+also grows.
 
-First, let's give a definition for our category.
-\begin{definition}[$\mathbf{Prog}$]
-	Category $\mathbf{Prog}$ is a subcategory of $\mathbf{Set}$ where programming
-	types are the objects and correspond to a set. The morphisms are pure
-	referentially transparent and terminating functions, which correspond to
-	a function in $\mathbf{Set}$.
-\end{definition}
+\begin{note}
+	The types of a language are not the objects of $\mathbf{Prog}(L)$, instead,
+	the objects of $\mathbf{Prog}(L)$ are sets that have a corresponding type in language $L$.
+	The same is true for functions, which are mathematical functions in $\mathbf{Prog}(L)$
+	and which have one or many counterparts in $L$. Using this correspondence language
+	is daunting, hence, instead we'll just say that a type \pc{T} is an object of $\mathbf{Prog}(L)$,
+	and that a function \pc{f(x::T)} is a morphism in $\mathbf{Prog}(L)$. Just remember
+	that whenever we are in $\mathbf{Prog}(L)$, the actual objects and morphisms are sets.
+\end{note}
 
-Since $\mathbf{Prog}$ is a subcategory of $\mathbf{Set}$, let's present
-some of the properties of $\mathbf{Set}$ and show their correspondence in $\mathbf{Prog}$.
-First, the initial object of $\mathbf{Set}$ is the empty set.
-In Julia, the initial object is the type \pc{::Union\{\}}.
+In the Julia programming, the number of types far exceeds those in $S$.
+Thus, the category $\mathbf{Prog}(J)$ of Julia programming
+is way larger than $\mathbf{Prog}(S)$. How large is it?
+This is not trivial to answer. As we've mentioned, Julia has many ways for user to construct new types,
+e.g. struct, product types, union types. In order to fully describe
+$\mathbf{Prog}(J)$, we would need to inspect all the primitive types available in the language,
+plus all the possibilities of constructing new types.
+Since this is not our goal, we'll instead showcase just some relevant properties of $\mathbf{Prog}(J)$.
+
+First, we know that $\mathbf{Set}$ has both an initial and terminal objects, which
+are the empty set and the singleton sets, respectively.
+In $\mathbf{Prog}(J)$ we also have both initial and terminal objects.
+The initial object is type \pc{::Union\{\}}.
 This type is also known as \pc{Base.Bottom}, and it's a subtype of every type in Julia, including
-itself. Thus, it behaves just like $\varnothing$, in the sense that $\varnothing \subset A$
+itself. It behaves like $\varnothing$, in the sense that $\varnothing \subset A$
 for any set $A$ including $\varnothing$.
 
 \bigskip
@@ -359,10 +379,8 @@ Note that a function $f:\varnothing \to A$ cannot ever be called, since we canno
 provide an element of $\varnothing$. In the same way, a function
 \pc{f(x::Union\{\})} cannot be called, because there is no instance of type \pc{Union\{\}}.
 
-The terminal object of $\mathbf{Set}$ are the singleton sets. Note that they all are initial objects,
-but they are all isomorphic.
-In Julia, the \pc{Nothing} type is a singleton type, which is the value \pc{nothing}.
-So is the type \pc{Tuple\{\}}, which only has \pc{()} as element.
+For the terminal object, the \pc{Nothing} type is a singleton type, which has value \pc{nothing}.
+So is the type \pc{Tuple\{\}}, which only has \pc{()} as an element.
 We can also define our own terminal types using a struct:
 
 \bigskip
@@ -373,3 +391,8 @@ julia> Base.issingletontype(Terminal)
 True
 \end{lstlisting}
 The only element of our type \pc{Terminal} is \pc{Terminal()}.
+
+In $\mathbf{Set}$, we have the product and the co-product (disjoint union) of sets. The same is true
+for types in Julia.
+The \pc{Tuple\{Type1, Type2\}} is the product of \pc{Type1} and \pc{Type2}, while \pc{Union\{Type1,Type2\}} is the co-proudct.
+Hence, $\mathbf{Prog}(J)$ is also complete and co-complete.
